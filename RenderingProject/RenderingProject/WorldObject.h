@@ -8,18 +8,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Shader.h"
-#include "Mesh.h"
-#include "Texture.h"
-#include "MeshRenderer.h"
 
 class WorldObject
 {
-private:
-	MeshRenderer m_renderer;
 public:
+	WorldObject(unsigned int assets[], int size);
 	glm::mat4 m_transform = glm::mat4(1.0f);
-	MeshRenderer* GetRenderer() { return &m_renderer; }
-	void OnStart();
-	void OnUpdate();
+	std::vector<unsigned int> m_assets;
 };

@@ -8,7 +8,8 @@
 class Texture
 {
 public:
-	void Initialize(const char* path, GLenum wrappingMode);
+	Texture(const char* path, GLenum wrappingMode);
+	Texture(const char* path);
 	void Bind(unsigned short textureUnit);
 private:
 	int m_width, m_height, m_channelCount;

@@ -1,4 +1,7 @@
+#pragma once
 #include "Mesh.h"
+#include <glad.h>
+#include <glfw3.h>
 
 void Mesh::CreatePrimitive(PrimitiveMeshShapes shape)
 {
@@ -40,7 +43,38 @@ void Mesh::CreatePrimitive(PrimitiveMeshShapes shape)
 	default:
 		break;
 	}
+
 }
+
+void Mesh::InitBuffers()
+{
+	glGenVertexArrays(1, &m_vao);
+	glGenBuffers(1, &m_vbo);
+	glGenBuffers(1, &m_ebo);
+	glBindVertexArray(m_vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * GetVertexCount(), GetVertices(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * GetIndexCount(), GetIndices(), GL_STATIC_DRAW);
+
+	//Vertex layout
+	//CURRENT VERTEX STRIDE: 5 * FLOAT
+	//Position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
+	glEnableVertexAttribArray(0);
+	//UV attribute
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
+}
+
+void Mesh::Bind()
+{
+	glBindVertexArray(m_vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+}
+
 
 Vertex* Mesh::GetVertices()
 {

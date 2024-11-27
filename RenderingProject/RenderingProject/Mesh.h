@@ -20,6 +20,8 @@ class Mesh
 public:
 	void CreatePrimitive(PrimitiveMeshShapes shape);
 	void CreateFromData(Vertex* vertices,unsigned int* indices);
+	void InitBuffers();
+	void Bind();
 	Vertex* GetVertices();
 	unsigned int* GetIndices();
 	unsigned int GetVertexCount();
@@ -30,4 +32,5 @@ private:
 	std::vector<unsigned int> m_indices;
 	unsigned int m_indexCount;
 	unsigned int m_vertexCount;
+	unsigned int m_vao, m_vbo, m_ebo;
 };

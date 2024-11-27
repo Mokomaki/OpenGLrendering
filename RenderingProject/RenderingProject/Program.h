@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "MeshRenderer.h"
+#include "Scene.h"
 
 class Program {
 
@@ -20,5 +21,6 @@ private:
 	void ProcessInput();
 private:
 	GLFWwindow* m_window;
-	std::vector<MeshRenderer> m_renderers;
+	MeshRenderer m_renderer;
+	Scene m_scene;
 };

@@ -30,7 +30,10 @@ void Shader::GenerateShader(const char * path)
     
     m_isInitialized = true;
     glUseProgram(m_programID);
-    m_transformUnifromLocation = glGetUniformLocation(m_programID, "transform");
+    m_modelUnifromLocation = glGetUniformLocation(m_programID, "model");
+    //m_viewUnifromLocation = glGetUniformLocation(m_programID, "view");
+    //m_projectionUnifromLocation = glGetUniformLocation(m_programID, "projection");
+
 }
 
 void Shader::SetUniformFloat(const std::string& name, float value)
@@ -45,9 +48,9 @@ void Shader::SetUniformBool(const std::string& name, bool value)
 {
     glUniform1i(glGetUniformLocation(m_programID, name.c_str()), (int)value);
 }
-void Shader::SetUniformTransfrom(glm::mat4& transform)
+void Shader::SetUniformTransfrom(glm::mat4 transform)
 {
-    glUniformMatrix4fv(m_transformUnifromLocation, 1, GL_FALSE, glm::value_ptr(transform));
+    glUniformMatrix4fv(m_modelUnifromLocation, 1, GL_FALSE, glm::value_ptr(transform));
 }
 void Shader::Bind()
 {

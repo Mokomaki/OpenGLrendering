@@ -19,7 +19,7 @@ public:
 	void SetUniformFloat(const std::string& name, float value);
 	void SetUniformInt(const std::string& name, int value);
 	void SetUniformBool(const std::string& name, bool value);
-	void SetUniformTransfrom(glm::mat4& transform);
+	void SetUniformTransfrom(glm::mat4 transform);
 private:
 	void LoadShaderFromFile(const char* path);
 	void CheckShaderError(unsigned int shaderID, GLenum process);
@@ -30,5 +30,7 @@ private:
 	unsigned int m_vertexShaderID;
 	unsigned int m_fragmentShaderID;
 	unsigned int m_programID;
-	unsigned int m_transformUnifromLocation;
+	unsigned int m_modelUnifromLocation;
+	unsigned int m_viewUnifromLocation;
+	unsigned int m_projectionUnifromLocation;
 };

@@ -5,26 +5,7 @@
 void Program::Run() 
 {
     Initialize();
-
-    MeshRenderer myRenderer;
-    Shader myShader;
-    Mesh myMesh;
-    Texture myTexture;
-    
-    myTexture.Initialize("D:/Pictures/MOONBABOON.png",GL_CLAMP_TO_BORDER);
-    myMesh.CreatePrimitive(PrimitiveMeshShapes::TRIANGLE_MESH);
-    myShader.GenerateShader("C:/Users/grest/source/repos/RenderingProgram/RenderingProject/RenderingProject/Image.shader");
-
-    myRenderer.Initialize(&myMesh, &myShader);
-    myRenderer.SetTexture(&myTexture);
-
-    glm::mat4 transform = glm::mat4(1.0f);
-    transform = glm::rotate(transform, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    myRenderer.SetTransformation(transform);
-
-    m_renderers.push_back(myRenderer);
-
-
+    m_scene.Initialize();
     RunApplicationLoop();
 }
 
@@ -34,6 +15,8 @@ void Program::RunApplicationLoop()
     {
         ProcessInput();
         Render();
+
+        m_scene.m_objects[0]->m_transform = glm::rotate(m_scene.m_objects[0]->m_transform,glm::radians(2.0f),  glm::vec3(0.0, 0.0, 0.0005f));
 
 
         glfwSwapBuffers(m_window);
@@ -47,11 +30,23 @@ void Program::Render()
     glClearColor(0.17254901f, 0.17254901f, 0.17254901f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    for (int i = 0; i < m_renderers.size(); i++)
+    for (int object = 0; object < m_scene.m_objects.size(); object++)
     {
-        m_renderers[i].Draw();
+        Asset* shaderAsset = nullptr;
+        unsigned int indexCount = 0;
+        for (int asset = 0; asset < m_scene.m_objects[object]->m_assets.size(); asset++)
+        {
+            m_scene.m_assets[asset]->Bind();
+            if (m_scene.m_assets[asset]->GetAssetType() == AssetType::SHADER)
+                shaderAsset = m_scene.m_assets[asset];
+            if (m_scene.m_assets[asset]->GetAssetType() == AssetType::MESH)
+                indexCount = m_scene.m_assets[asset]->GetIndexCount();
+        }
+        shaderAsset->SetTransformation(m_scene.m_objects[object]->m_transform);
+        m_renderer.Draw(indexCount);
     }
     
+
 }
 
 void Program::ProcessInput()
@@ -59,11 +54,11 @@ void Program::ProcessInput()
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
         std::cout << "ESCAPE PRESSED" << std::endl;
-        m_renderers[0].SetShaderUniformFloat("color", 1.0f);
+        //m_renderers[0].SetShaderUniformFloat("color", 1.0f);
     }
     else
     {
-        m_renderers[0].SetShaderUniformFloat("color", 0.0f);
+        //m_renderers[0].SetShaderUniformFloat("color", 0.0f);
     }
 }
 
