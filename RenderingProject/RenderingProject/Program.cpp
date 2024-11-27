@@ -11,54 +11,46 @@ void Program::Run()
 
 void Program::RunApplicationLoop()
 {
+    int prevWidth = 0, prevHeight = 0;
+    auto t_start = std::chrono::high_resolution_clock::now();
     while (!glfwWindowShouldClose(m_window))
     {
+        //Handle window resize
+        int width = 0, height =0;
+        glfwGetWindowSize(m_window, &width, &height);
+        if (width != prevWidth || height != prevHeight)
+        {
+            m_scene.m_cameraProjection = glm::perspective(glm::radians(80.0f), (float)width / (float)height, 0.1f, 100.0f);
+        }
+        //Timing
+        auto t_now = std::chrono::high_resolution_clock::now();
+        m_deltatime = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
+        t_start = t_now;
+        std::cout <<  1 / m_deltatime << std::endl;
+
         ProcessInput();
-        Render();
 
-        m_scene.m_objects[0]->m_transform = glm::rotate(m_scene.m_objects[0]->m_transform,glm::radians(2.0f),  glm::vec3(0.0, 0.0, 0.0005f));
+        float i = 1;
+        for (auto obj : m_scene.m_objects)
+        {
+            float rotation = i * m_deltatime + 1;
+            obj->m_transform = glm::rotate(obj->m_transform,glm::radians(rotation),  glm::vec3(0.0005f, 0.0005f, 0.0005f));
+            i += 0.02;
+        }
 
 
+        m_renderer.Render(&m_scene);
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
     glfwTerminate();
 }
 
-void Program::Render()
-{
-    glClearColor(0.17254901f, 0.17254901f, 0.17254901f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    for (int object = 0; object < m_scene.m_objects.size(); object++)
-    {
-        Asset* shaderAsset = nullptr;
-        unsigned int indexCount = 0;
-        for (int asset = 0; asset < m_scene.m_objects[object]->m_assets.size(); asset++)
-        {
-            m_scene.m_assets[asset]->Bind();
-            if (m_scene.m_assets[asset]->GetAssetType() == AssetType::SHADER)
-                shaderAsset = m_scene.m_assets[asset];
-            if (m_scene.m_assets[asset]->GetAssetType() == AssetType::MESH)
-                indexCount = m_scene.m_assets[asset]->GetIndexCount();
-        }
-        shaderAsset->SetTransformation(m_scene.m_objects[object]->m_transform);
-        m_renderer.Draw(indexCount);
-    }
-    
-
-}
-
 void Program::ProcessInput()
 {
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
-        std::cout << "ESCAPE PRESSED" << std::endl;
-        //m_renderers[0].SetShaderUniformFloat("color", 1.0f);
-    }
-    else
-    {
-        //m_renderers[0].SetShaderUniformFloat("color", 0.0f);
+        glfwSetWindowShouldClose(m_window, 1);
     }
 }
 
@@ -94,6 +86,7 @@ void Program::Initialize()
 
     //Set viewport and a callback for window resize
     glViewport(0, 0, 800, 600);
+    glEnable(GL_DEPTH_TEST);
     void FramebufferSizeCallback(GLFWwindow * window, int width, int height);
     glfwSetFramebufferSizeCallback(m_window, FramebufferSizeCallback);
 }

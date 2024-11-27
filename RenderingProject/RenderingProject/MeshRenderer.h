@@ -11,14 +11,13 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "Scene.h"
 
 class MeshRenderer
 {
 public:
-	void Initialize();
+	
+	void Render(Scene* scene);
+private:
 	void Draw(unsigned int indexCount);
-	void SetShaderUniformFloat(const std::string& name, float value);
-	void SetShaderUniformInt(const std::string& name, int value);
-	void SetShaderUniformBool(const std::string& name, bool value);
-	void SetTransformation(glm::mat4& transfrorm);
 };

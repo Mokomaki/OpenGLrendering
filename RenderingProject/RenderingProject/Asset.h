@@ -19,7 +19,7 @@ public:
 	void Bind();
 	AssetType GetAssetType();
 	unsigned int GetID();
-	void SetTransformation(glm::mat4 transformation);
+	void SetTransformation(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
 	unsigned int GetIndexCount();
 private:
 	unsigned int m_ID;

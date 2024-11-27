@@ -9,9 +9,9 @@ void Mesh::CreatePrimitive(PrimitiveMeshShapes shape)
 	{
 	case PrimitiveMeshShapes::TRIANGLE_MESH:
 		//						 x		y	  z      u      v
-		m_vertices.push_back({ -0.5f, -0.5f, 0.0f,  0.0f,  0.0 });
-		m_vertices.push_back({  0.5f, -0.5f, 0.0f,  1.0f,  0.0 });
-		m_vertices.push_back({  0.0f,  0.5f, 0.0f,  0.5f,  1.0 });
+		m_vertices.push_back({ -1.0f, -1.0f, 0.0f,  0.0f,  0.0 });
+		m_vertices.push_back({  1.0f, -1.0f, 0.0f,  1.0f,  0.0 });
+		m_vertices.push_back({  0.0f,  1.0f, 0.0f,  0.5f,  1.0 });
 		m_vertexCount = 3;
 
 		m_indices.push_back(0);
@@ -20,10 +20,10 @@ void Mesh::CreatePrimitive(PrimitiveMeshShapes shape)
 		m_indexCount = 3;
 		break;
 	case PrimitiveMeshShapes::PLANE_MESH:
-		m_vertices.push_back({ 0.5f,  0.5f, 0.0f,  1.0f, 1.0f });
-		m_vertices.push_back({ 0.5f, -0.5f, 0.0f,  1.0f, 0.0f });
-		m_vertices.push_back({-0.5f, -0.5f, 0.0f,  0.0f, 0.0f });
-		m_vertices.push_back({-0.5f,  0.5f, 0.0f,  0.0f, 1.0f });
+		m_vertices.push_back({ 1.0f,  1.0f, 0.0f,  1.0f, 1.0f });
+		m_vertices.push_back({ 1.0f, -1.0f, 0.0f,  1.0f, 0.0f });
+		m_vertices.push_back({-1.0f, -1.0f, 0.0f,  0.0f, 0.0f });
+		m_vertices.push_back({-1.0f,  1.0f, 0.0f,  0.0f, 1.0f });
 		m_vertexCount = 4;
 
 		m_indices.push_back(0);
@@ -35,7 +35,81 @@ void Mesh::CreatePrimitive(PrimitiveMeshShapes shape)
 		m_indexCount = 6;
 		break;
 	case PrimitiveMeshShapes::CUBE_MESH:
-		std::cout << "Primitive 'CUBE' not implemented!" << std::endl;
+		m_vertices.push_back({  1.0f,  1.0f, -1.0f,  1.0f, 1.0f });
+		m_vertices.push_back({  1.0f, -1.0f, -1.0f,  1.0f, 0.0f });
+		m_vertices.push_back({ -1.0f, -1.0f, -1.0f,  0.0f, 0.0f });
+		m_vertices.push_back({ -1.0f,  1.0f, -1.0f,  0.0f, 1.0f });
+
+		m_vertices.push_back({ -1.0f, -1.0f,  1.0f,  1.0f, 1.0f });
+		m_vertices.push_back({ -1.0f,  1.0f,  1.0f,  1.0f, 0.0f });
+		m_vertices.push_back({  1.0f,  1.0f,  1.0f,  0.0f, 0.0f });
+		m_vertices.push_back({  1.0f, -1.0f,  1.0f,  0.0f, 1.0f });
+
+		m_vertices.push_back({ 1.0f,  1.0f,   1.0f,  1.0f, 1.0f });
+		m_vertices.push_back({ 1.0f, -1.0f,   1.0f,  1.0f, 0.0f });
+		m_vertices.push_back({ 1.0f, -1.0f,  -1.0f,  0.0f, 0.0f });
+		m_vertices.push_back({ 1.0f,  1.0f,  -1.0f,  0.0f, 1.0f });
+
+		m_vertices.push_back({ -1.0f, -1.0f, -1.0f,  1.0f, 1.0f });
+		m_vertices.push_back({ -1.0f,  1.0f, -1.0f,  1.0f, 0.0f });
+		m_vertices.push_back({ -1.0f,  1.0f,  1.0f,  0.0f, 0.0f });
+		m_vertices.push_back({ -1.0f, -1.0f,  1.0f,  0.0f, 1.0f });
+
+		m_vertices.push_back({  1.0f,  1.0f ,  1.0f,  1.0f, 1.0f });
+		m_vertices.push_back({ -1.0f,  1.0f ,  1.0f,  1.0f, 0.0f });
+		m_vertices.push_back({ -1.0f,  1.0f , -1.0f,  0.0f, 0.0f });
+		m_vertices.push_back({  1.0f,  1.0f , -1.0f,  0.0f, 1.0f });
+
+		m_vertices.push_back({ -1.0f, 1.0f,  0.5f,  1.0f, 1.0f });
+		m_vertices.push_back({  1.0f, -1.0f,  0.5f,  1.0f, 0.0f });
+		m_vertices.push_back({  1.0f, -1.0f,  0.5f,  0.0f, 0.0f });
+		m_vertices.push_back({ -1.0f, 1.0f,  0.5f,  0.0f, 1.0f });
+
+		m_vertexCount = 16;
+
+		m_indices.push_back(0);
+		m_indices.push_back(1);
+		m_indices.push_back(3);
+		m_indices.push_back(1);
+		m_indices.push_back(2);
+		m_indices.push_back(3);
+
+		m_indices.push_back(4);
+		m_indices.push_back(5);
+		m_indices.push_back(7);
+		m_indices.push_back(5);
+		m_indices.push_back(6);
+		m_indices.push_back(7);
+
+		m_indices.push_back(8);
+		m_indices.push_back(9);
+		m_indices.push_back(11);
+		m_indices.push_back(9);
+		m_indices.push_back(10);
+		m_indices.push_back(11);
+
+		m_indices.push_back(12);
+		m_indices.push_back(13);
+		m_indices.push_back(15);
+		m_indices.push_back(13);
+		m_indices.push_back(14);
+		m_indices.push_back(15);
+
+		m_indices.push_back(16);
+		m_indices.push_back(17);
+		m_indices.push_back(19);
+		m_indices.push_back(17);
+		m_indices.push_back(18);
+		m_indices.push_back(19);
+
+		m_indices.push_back(20);
+		m_indices.push_back(21);
+		m_indices.push_back(23);
+		m_indices.push_back(21);
+		m_indices.push_back(22);
+		m_indices.push_back(23);
+
+		m_indexCount = 36;
 		break;
 	case PrimitiveMeshShapes::SPHERE_MESH:
 		std::cout << "Primitive 'SPHERE' not implemented!" << std::endl;
@@ -74,7 +148,6 @@ void Mesh::Bind()
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 }
-
 
 Vertex* Mesh::GetVertices()
 {

@@ -19,7 +19,7 @@ public:
 	void SetUniformFloat(const std::string& name, float value);
 	void SetUniformInt(const std::string& name, int value);
 	void SetUniformBool(const std::string& name, bool value);
-	void SetUniformTransfrom(glm::mat4 transform);
+	void SetUniformTransfrom(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
 private:
 	void LoadShaderFromFile(const char* path);
 	void CheckShaderError(unsigned int shaderID, GLenum process);

@@ -52,7 +52,7 @@ void Asset::Bind()
 	}
 }
 
-void Asset::SetTransformation(glm::mat4 transformation)
+void Asset::SetTransformation(glm::mat4& model, glm::mat4& view, glm::mat4& projection)
 {
 	if (m_type != AssetType::SHADER)
 	{
@@ -60,7 +60,7 @@ void Asset::SetTransformation(glm::mat4 transformation)
 		return;
 	}
 
-	m_shader.SetUniformTransfrom(transformation);
+	m_shader.SetUniformTransfrom(model, view, projection);
 }
 
 unsigned int Asset::GetIndexCount()
