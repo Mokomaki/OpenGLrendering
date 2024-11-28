@@ -189,7 +189,6 @@ void Mesh::CreateFromFile(const char* path, bool hasNormals)
 		};
 		m_vertices.push_back(vert);
 		m_vertexCount = m_vertices.size();
-		std::cout << vertexIndices[i] << std::endl;
 	}
 	for (int i = 0; i < vertexIndices.size(); i += 3)
 	{
@@ -274,11 +273,6 @@ void Mesh::InitBuffers()
 	glEnableVertexAttribArray(1);
 
 	glBindVertexArray(0);
-
-	for (int i = 0; i < m_vertices.size(); i++)
-	{
-		std::cout << m_vertices[i].x << " " << m_vertices[i].y << " " << m_vertices[i].z << " " << m_vertices[i].u << " " << m_vertices[i].v << " " << std::endl;
-	}
 
 }
 

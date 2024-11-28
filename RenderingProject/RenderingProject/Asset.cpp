@@ -49,12 +49,12 @@ void Asset::Bind()
 		m_shader.Bind();
 		break;
 	case AssetType::TEXTURE:
-		break;
-	default:
 		for (int i = 0; i < m_textures.size(); i++)
 		{
 			m_textures[i].Bind(i);
 		}
+		break;
+	default:
 		break;
 	}
 }

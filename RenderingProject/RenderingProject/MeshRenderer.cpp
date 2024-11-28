@@ -2,30 +2,34 @@
 
 void MeshRenderer::Render(Scene* scene)
 {
-    glm::vec3 myColor = glm::vec3(0.8f, 0.1f, 0.3f);
+    glm::vec3 myColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
     glClearColor(0.17254901f, 0.17254901f, 0.17254901f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glm::mat4 viewMatrix = scene->m_camera->GetViewMatrix();
     for (int object = 0; object < scene->m_objects.size(); object++)
     {
+
         unsigned int indexCount = 0;
         Asset* shaderAsset = nullptr;
         for (int asset = 0; asset < scene->m_objects[object]->m_assets.size(); asset++)
         {
-            scene->m_assets[asset]->Bind();
+            Asset* currentAsset = scene->m_assets[scene->m_objects[object]->m_assets[asset]];
 
-            if (scene->m_assets[asset]->GetAssetType() == AssetType::SHADER)
+            currentAsset->Bind();
+
+            if (currentAsset->GetAssetType() == AssetType::SHADER)
             {
-                shaderAsset = scene->m_assets[asset];
+                shaderAsset = currentAsset;
             }
-            else if (scene->m_assets[asset]->GetAssetType() == AssetType::MESH)
+            else if (currentAsset->GetAssetType() == AssetType::MESH)
             {
-                indexCount = scene->m_assets[asset]->GetIndexCount();
+                indexCount = currentAsset->GetIndexCount();
             }
         }
         shaderAsset->SetUniformData("color", myColor);
-        shaderAsset->SetTransformation(scene->m_objects[object]->m_transform,scene->m_cameraView,scene->m_cameraProjection);
+        shaderAsset->SetTransformation(scene->m_objects[object]->m_transform,viewMatrix,scene->m_cameraProjection);
         Draw(indexCount);
     }
 }
@@ -34,24 +38,3 @@ void MeshRenderer::Draw(unsigned int indexCount)
 {
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }
-/*
-void MeshRenderer::SetShaderUniformFloat(const std::string& name, float value)
-{
-    m_shader->Bind();
-    m_shader->SetUniformFloat(name, value);
-}
-void MeshRenderer::SetShaderUniformInt(const std::string& name, int value)
-{
-    m_shader->Bind();
-    m_shader->SetUniformInt(name, value);
-}
-void MeshRenderer::SetShaderUniformBool(const std::string& name, bool value)
-{
-    m_shader->Bind();
-    m_shader->SetUniformBool(name, value);
-}
-void MeshRenderer::SetTransformation(glm::mat4& transfrorm)
-{
-    m_shader->Bind();
-    m_shader->SetUniformTransfrom(transfrorm);
-}*/

@@ -16,7 +16,6 @@
 class MeshRenderer
 {
 public:
-	
 	void Render(Scene* scene);
 private:
 	void Draw(unsigned int indexCount);
