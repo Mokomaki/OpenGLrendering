@@ -31,6 +31,13 @@ Asset::Asset(PrimitiveMeshShapes meshPrimitive, unsigned int assetID)
 	m_mesh.CreatePrimitive(meshPrimitive);
 	m_mesh.InitBuffers();
 }
+Asset::Asset(const char* meshPath, bool hasNormals, unsigned int assetID)
+{
+	m_type = AssetType::MESH;
+	m_ID = assetID;
+	m_mesh.CreateFromFile(meshPath, hasNormals);
+	m_mesh.InitBuffers();
+}
 void Asset::Bind()
 {
 	switch (m_type)
@@ -80,4 +87,50 @@ AssetType Asset::GetAssetType()
 unsigned int Asset::GetID()
 {
 	return m_ID;
+}
+
+void Asset::SetUniformData(const char* name, int value)
+{
+	if (m_type != AssetType::SHADER)
+	{
+		std::cout << "ERROR: Attempted to set uniform for non-shader asset!" << std::endl;
+		return;
+	}
+	m_shader.SetUniform(name, value);
+}
+void Asset::SetUniformData(const char* name, float value)
+{
+	if (m_type != AssetType::SHADER)
+	{
+		std::cout << "ERROR: Attempted to set uniform for non-shader asset!" << std::endl;
+		return;
+	}
+	m_shader.SetUniform(name, value);
+}
+void Asset::SetUniformData(const char* name, bool value)
+{
+	if (m_type != AssetType::SHADER)
+	{
+		std::cout << "ERROR: Attempted to set uniform for non-shader asset!" << std::endl;
+		return;
+	}
+	m_shader.SetUniform(name, value);
+}
+void Asset::SetUniformData(const char* name, glm::vec3& value)
+{
+	if (m_type != AssetType::SHADER)
+	{
+		std::cout << "ERROR: Attempted to set uniform for non-shader asset!" << std::endl;
+		return;
+	}
+	m_shader.SetUniform(name, value);
+}
+void Asset::SetUniformData(const char* name, glm::mat4& value)
+{
+	if (m_type != AssetType::SHADER)
+	{
+		std::cout << "ERROR: Attempted to set uniform for non-shader asset!" << std::endl;
+		return;
+	}
+	m_shader.SetUniform(name, value);
 }

@@ -35,16 +35,23 @@ void Shader::GenerateShader(const char * path)
     m_projectionUnifromLocation = glGetUniformLocation(m_programID, "projection");
 
 }
-
-void Shader::SetUniformFloat(const std::string& name, float value)
+void Shader::SetUniform(const std::string& name, glm::mat4& value)
+{
+    glUniformMatrix4fv(glGetUniformLocation(m_programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+}
+void Shader::SetUniform(const std::string& name, glm::vec3& value)
+{
+    glUniform3f(glGetUniformLocation(m_programID, name.c_str()), value.x,value.y,value.z);
+}
+void Shader::SetUniform(const std::string& name, float value)
 {
     glUniform1f(glGetUniformLocation(m_programID, name.c_str()), value);
 }
-void Shader::SetUniformInt(const std::string& name, int value)
+void Shader::SetUniform(const std::string& name, int value)
 {
     glUniform1i(glGetUniformLocation(m_programID, name.c_str()), value);
 }
-void Shader::SetUniformBool(const std::string& name, bool value)
+void Shader::SetUniform(const std::string& name, bool value)
 {
     glUniform1i(glGetUniformLocation(m_programID, name.c_str()), (int)value);
 }

@@ -7,7 +7,8 @@ enum class AssetType
 {
 	MESH,
 	SHADER,
-	TEXTURE
+	TEXTURE,
+	UNIFORMDATA
 };
 
 class Asset
@@ -16,10 +17,16 @@ public:
 	Asset(const char* texturePaths[], unsigned int assetID, unsigned short numTextures);
 	Asset(const char* shaderPath, unsigned int assetID);
 	Asset(PrimitiveMeshShapes meshPrimitive, unsigned int assetID);
+	Asset(const char* meshPath, bool hasNormals, unsigned int assetID);
 	void Bind();
 	AssetType GetAssetType();
 	unsigned int GetID();
 	void SetTransformation(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
+	void SetUniformData(const char* name, glm::mat4& value);
+	void SetUniformData(const char* name, glm::vec3& value);
+	void SetUniformData(const char* name, float value);
+	void SetUniformData(const char* name, int value);
+	void SetUniformData(const char* name, bool value);
 	unsigned int GetIndexCount();
 private:
 	unsigned int m_ID;

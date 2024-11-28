@@ -2,6 +2,8 @@
 
 void MeshRenderer::Render(Scene* scene)
 {
+    glm::vec3 myColor = glm::vec3(0.8f, 0.1f, 0.3f);
+
     glClearColor(0.17254901f, 0.17254901f, 0.17254901f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -22,6 +24,7 @@ void MeshRenderer::Render(Scene* scene)
                 indexCount = scene->m_assets[asset]->GetIndexCount();
             }
         }
+        shaderAsset->SetUniformData("color", myColor);
         shaderAsset->SetTransformation(scene->m_objects[object]->m_transform,scene->m_cameraView,scene->m_cameraProjection);
         Draw(indexCount);
     }

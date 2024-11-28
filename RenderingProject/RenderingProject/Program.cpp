@@ -6,11 +6,13 @@ void Program::Run()
 {
     Initialize();
     m_scene.Initialize();
+
     RunApplicationLoop();
 }
 
 void Program::RunApplicationLoop()
 {
+
     int prevWidth = 0, prevHeight = 0;
     auto t_start = std::chrono::high_resolution_clock::now();
     while (!glfwWindowShouldClose(m_window))
@@ -26,7 +28,7 @@ void Program::RunApplicationLoop()
         auto t_now = std::chrono::high_resolution_clock::now();
         m_deltatime = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
         t_start = t_now;
-        std::cout <<  1 / m_deltatime << std::endl;
+        //std::cout <<  1 / m_deltatime << std::endl;
 
         ProcessInput();
 
@@ -34,12 +36,12 @@ void Program::RunApplicationLoop()
         for (auto obj : m_scene.m_objects)
         {
             float rotation = i * m_deltatime + 1;
-            obj->m_transform = glm::rotate(obj->m_transform,glm::radians(rotation),  glm::vec3(0.0005f, 0.0005f, 0.0005f));
+            obj->m_transform = glm::rotate(obj->m_transform,glm::radians(rotation),  glm::vec3(0.0005f, 0.0000f, 0.0000f));
             i += 0.02;
         }
 
-
         m_renderer.Render(&m_scene);
+        
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }

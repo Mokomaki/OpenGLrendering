@@ -16,9 +16,11 @@ public:
 	bool IsInitialized();
 	void GenerateShader(const char* path);
 	void Bind();
-	void SetUniformFloat(const std::string& name, float value);
-	void SetUniformInt(const std::string& name, int value);
-	void SetUniformBool(const std::string& name, bool value);
+	void SetUniform(const std::string& name, glm::mat4& value);
+	void SetUniform(const std::string& name, glm::vec3& value);
+	void SetUniform(const std::string& name, float value);
+	void SetUniform(const std::string& name, int value);
+	void SetUniform(const std::string& name, bool value);
 	void SetUniformTransfrom(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
 private:
 	void LoadShaderFromFile(const char* path);

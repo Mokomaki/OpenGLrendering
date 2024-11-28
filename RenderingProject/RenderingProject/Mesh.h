@@ -1,6 +1,14 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <glad.h>
+#include <glfw3.h>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 struct Vertex {
 	float x, y, z;
@@ -19,7 +27,7 @@ class Mesh
 {
 public:
 	void CreatePrimitive(PrimitiveMeshShapes shape);
-	void CreateFromData(Vertex* vertices,unsigned int* indices);
+	void CreateFromFile(const char* path, bool hasNormals);
 	void InitBuffers();
 	void Bind();
 	Vertex* GetVertices();
@@ -28,6 +36,11 @@ public:
 	unsigned int GetIndexCount();
 
 private:
+	glm::vec3 Parse3Floats(std::string& text);
+	glm::vec2 Parse2Floats(std::string& text);
+	void Parse6Ints(std::string& text, unsigned int* vertexArray, unsigned int* uvArray);
+	void Parse9Ints(std::string& text, unsigned int* vertexArray, unsigned int* uvArray, unsigned int* normalArray);
+
 	std::vector<Vertex> m_vertices;
 	std::vector<unsigned int> m_indices;
 	unsigned int m_indexCount;
