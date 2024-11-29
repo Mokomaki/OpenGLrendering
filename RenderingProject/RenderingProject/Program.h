@@ -5,7 +5,7 @@
 #include <vector>
 #include <chrono>
 
-#include "MeshRenderer.h"
+#include "Renderer.h"
 #include "Scene.h"
 class Program {
 
@@ -17,7 +17,7 @@ private:
 	void ProcessInput();
 private:
 	GLFWwindow* m_window;
-	MeshRenderer m_renderer;
+	Renderer m_renderer;
 	bool m_firstMouseCallback;
 	Scene m_scene;
 	float m_deltatime;

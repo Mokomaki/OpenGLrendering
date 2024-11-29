@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -26,6 +27,7 @@ public:
 private:
 	void LoadShaderFromFile(const char* path);
 	void CheckShaderError(unsigned int shaderID, GLenum process);
+	unsigned int GetUniformLocation(const char* name);
 private:
 	bool m_isInitialized = false;
 	std::string m_vertexSource;
@@ -33,6 +35,8 @@ private:
 	unsigned int m_vertexShaderID;
 	unsigned int m_fragmentShaderID;
 	unsigned int m_programID;
+
+	std::unordered_map<const char*, unsigned int> m_uniformLocations;
 	unsigned int m_modelUnifromLocation;
 	unsigned int m_viewUnifromLocation;
 	unsigned int m_projectionUnifromLocation;

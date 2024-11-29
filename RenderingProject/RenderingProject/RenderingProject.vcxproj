@@ -150,7 +150,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -162,7 +162,7 @@
     <ClInclude Include="Asset.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
@@ -173,6 +173,7 @@
   <ItemGroup>
     <None Include="Blend.shader" />
     <None Include="Default.shader" />
+    <None Include="Grid.shader" />
     <None Include="Image.shader" />
     <None Include="Playground.shader" />
     <None Include="PosToRgb.shader" />

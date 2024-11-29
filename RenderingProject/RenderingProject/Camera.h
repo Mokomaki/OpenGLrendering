@@ -32,6 +32,7 @@ public:
         Yaw = yaw;
         Pitch = pitch;
         updateCameraVectors();
+        m_Projection = glm::perspective(glm::radians(80.0f), 800.0f / 600.0f, 0.1f, 100.0f);
     }
     // constructor with scalar values
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(CamConsts::SPEED), MouseSensitivity(CamConsts::SENSITIVITY), Zoom(CamConsts::ZOOM)
@@ -61,6 +62,7 @@ public:
     glm::vec3 Up;
     glm::vec3 Right;
     glm::vec3 WorldUp;
+    glm::mat4 m_Projection;
     // euler Angles
     float Yaw;
     float Pitch;

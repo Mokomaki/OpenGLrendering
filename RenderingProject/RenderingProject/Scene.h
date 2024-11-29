@@ -21,7 +21,6 @@ public:
 
 public:
 	Camera* m_camera;
-	glm::mat4 m_cameraProjection;
 	std::vector<WorldObject*> m_objects;
 	std::vector<Asset*> m_assets;
 };

@@ -35,32 +35,47 @@ void Shader::GenerateShader(const char * path)
     m_projectionUnifromLocation = glGetUniformLocation(m_programID, "projection");
 
 }
+
+unsigned int Shader::GetUniformLocation(const char* name)
+{
+    if (m_uniformLocations.find(name) != m_uniformLocations.end())
+        return m_uniformLocations[name];
+
+    m_uniformLocations[name] = glGetUniformLocation(m_programID, name);
+}
+
 void Shader::SetUniform(const std::string& name, glm::mat4& value)
 {
-    glUniformMatrix4fv(glGetUniformLocation(m_programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+    glUniformMatrix4fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
+
 void Shader::SetUniform(const std::string& name, glm::vec3& value)
 {
-    glUniform3f(glGetUniformLocation(m_programID, name.c_str()), value.x,value.y,value.z);
+    glUniform3f(GetUniformLocation(name.c_str()), value.x,value.y,value.z);
 }
+
 void Shader::SetUniform(const std::string& name, float value)
 {
-    glUniform1f(glGetUniformLocation(m_programID, name.c_str()), value);
+    glUniform1f(GetUniformLocation(name.c_str()), value);
 }
+
 void Shader::SetUniform(const std::string& name, int value)
 {
-    glUniform1i(glGetUniformLocation(m_programID, name.c_str()), value);
+    glUniform1i(GetUniformLocation(name.c_str()), value);
 }
+
 void Shader::SetUniform(const std::string& name, bool value)
 {
-    glUniform1i(glGetUniformLocation(m_programID, name.c_str()), (int)value);
+    glUniform1i(GetUniformLocation(name.c_str()), (int)value);
 }
+
 void Shader::SetUniformTransfrom(glm::mat4& model, glm::mat4& view, glm::mat4& projection)
 {
     glUniformMatrix4fv(m_modelUnifromLocation, 1, GL_FALSE, glm::value_ptr(model));
     glUniformMatrix4fv(m_viewUnifromLocation, 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(m_projectionUnifromLocation, 1, GL_FALSE, glm::value_ptr(projection));
 }
+
 void Shader::Bind()
 {
     if (!m_isInitialized)
@@ -136,7 +151,6 @@ void Shader::LoadShaderFromFile(const char* path)
     m_fragmentSource = fragmentSource.str();
     m_vertexSource = vertexSource.str();
 }
-
 
 Shader::~Shader()
 {

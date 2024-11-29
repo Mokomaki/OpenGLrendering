@@ -22,7 +22,7 @@ void Program::RunApplicationLoop()
         glfwGetWindowSize(m_window, &currentScreenWidth, &currentScreenHeight);
         if(currentScreenWidth != lastScreenWidth || currentScreenHeight != lastScreenHeight)
         {
-            m_scene.m_cameraProjection = glm::perspective(glm::radians(80.0f), (float)currentScreenWidth / (float)currentScreenHeight, 0.1f, 100.0f);
+            m_scene.m_camera->m_Projection = glm::perspective(glm::radians(80.0f), (float)currentScreenWidth / (float)currentScreenHeight, 0.1f, 100.0f);
             lastScreenWidth = currentScreenWidth;
             lastScreenHeight = currentScreenHeight;
         }
@@ -137,8 +137,11 @@ void Program::Initialize()
     //Set viewport and a callback for window resize
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     void FramebufferSizeCallback(GLFWwindow * window, int width, int height);
     glfwSetFramebufferSizeCallback(m_window, FramebufferSizeCallback);
+    glfwSwapInterval(0);
 }
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
