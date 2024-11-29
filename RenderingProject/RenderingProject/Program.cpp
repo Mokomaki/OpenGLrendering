@@ -7,7 +7,6 @@ void Program::Run()
     Initialize();
     m_scene.Initialize();
     RunApplicationLoop();
-
 }
 
 void Program::RunApplicationLoop()
@@ -39,8 +38,6 @@ void Program::RunApplicationLoop()
             float rotation = 20 * m_deltatime;
             obj->m_transform = glm::rotate(obj->m_transform,glm::radians(rotation),  glm::vec3(0.0000f, 1.0f, 0.0000f));
         }
-
-
 
         m_renderer.Render(&m_scene);
         

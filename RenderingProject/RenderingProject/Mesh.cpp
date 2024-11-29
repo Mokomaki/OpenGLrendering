@@ -1,6 +1,17 @@
 #pragma once
 #include "Mesh.h"
 
+Mesh::Mesh(PrimitiveMeshShapes shape)
+{
+
+	CreatePrimitive(shape);
+	InitBuffers();
+}
+Mesh::Mesh(const char* path, bool hasNormals)
+{
+	CreateFromFile(path, hasNormals);
+	InitBuffers();
+}
 
 void Mesh::CreatePrimitive(PrimitiveMeshShapes shape)
 {
@@ -116,7 +127,11 @@ void Mesh::CreatePrimitive(PrimitiveMeshShapes shape)
 	default:
 		break;
 	}
+}
 
+ASSETTYPE Mesh::GetAssetType()
+{
+	return ASSETTYPE::MESH;
 }
 
 void Mesh::CreateFromFile(const char* path, bool hasNormals)
@@ -270,6 +285,7 @@ void Mesh::InitBuffers()
 	glEnableVertexAttribArray(0);
 	//UV attribute
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(3 * sizeof(float)));
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)offsetof(Vertex,u));
 	glEnableVertexAttribArray(1);
 
 	glBindVertexArray(0);

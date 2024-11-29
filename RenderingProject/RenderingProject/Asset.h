@@ -1,9 +1,5 @@
 #pragma once
-#include "Mesh.h"
-#include "Texture.h"
-#include "Shader.h"
-
-enum class AssetType
+enum class ASSETTYPE
 {
 	MESH,
 	SHADER,
@@ -11,27 +7,12 @@ enum class AssetType
 	UNIFORMDATA
 };
 
+
+
 class Asset
 {
 public:
-	Asset(const char* texturePaths[], unsigned int assetID, unsigned short numTextures);
-	Asset(const char* shaderPath, unsigned int assetID);
-	Asset(PrimitiveMeshShapes meshPrimitive, unsigned int assetID);
-	Asset(const char* meshPath, bool hasNormals, unsigned int assetID);
-	void Bind();
-	AssetType GetAssetType();
-	unsigned int GetID();
-	void SetTransformation(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
-	void SetUniformData(const char* name, glm::mat4& value);
-	void SetUniformData(const char* name, glm::vec3& value);
-	void SetUniformData(const char* name, float value);
-	void SetUniformData(const char* name, int value);
-	void SetUniformData(const char* name, bool value);
-	unsigned int GetIndexCount();
-private:
-	unsigned int m_ID;
-	AssetType m_type;
-	Mesh m_mesh;
-	Shader m_shader;
-	std::vector<Texture> m_textures;
+	virtual void Bind() =0;
+	virtual ASSETTYPE GetAssetType()=0;
+	const char* m_name;
 };

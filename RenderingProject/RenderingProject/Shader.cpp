@@ -1,8 +1,17 @@
 #include "Shader.h"
 
+Shader::Shader(const char* path)
+{
+    GenerateShader(path);
+}
+
+ASSETTYPE Shader::GetAssetType()
+{
+    return ASSETTYPE::SHADER;
+}
+
 void Shader::GenerateShader(const char * path)
 {
-
     LoadShaderFromFile(path);
     const char* vertexSource = m_vertexSource.c_str();
     const char* fragmentSource = m_fragmentSource.c_str();
@@ -42,6 +51,7 @@ unsigned int Shader::GetUniformLocation(const char* name)
         return m_uniformLocations[name];
 
     m_uniformLocations[name] = glGetUniformLocation(m_programID, name);
+    return m_uniformLocations[name];
 }
 
 void Shader::SetUniform(const std::string& name, glm::mat4& value)
@@ -78,9 +88,6 @@ void Shader::SetUniformTransfrom(glm::mat4& model, glm::mat4& view, glm::mat4& p
 
 void Shader::Bind()
 {
-    if (!m_isInitialized)
-        std::cout << "ERROR: Attempted to bind uninitialized shaderprogram!" << std::endl;
-
     glUseProgram(m_programID);
 }
 

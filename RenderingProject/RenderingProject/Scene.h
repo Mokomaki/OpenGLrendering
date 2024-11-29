@@ -3,6 +3,7 @@
 #include <glfw3.h>
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -10,6 +11,10 @@
 
 #include "WorldObject.h"
 #include "Asset.h"
+#include "Shader.h"
+#include "Mesh.h"
+#include "Texture.h"
+#include "UniformData.h"
 #include "Camera.h"
 
 class Scene
@@ -22,5 +27,5 @@ public:
 public:
 	Camera* m_camera;
 	std::vector<WorldObject*> m_objects;
-	std::vector<Asset*> m_assets;
+	std::unordered_map<const char*,Asset*> m_assets;
 };

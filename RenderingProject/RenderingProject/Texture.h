@@ -2,16 +2,21 @@
 #include <glad.h>
 #include <glfw3.h>
 #include <iostream>
-
 #include "stb_image.h"
+#include <vector>
 
-class Texture
+#include "Asset.h"
+
+class Texture : public Asset
 {
 public:
 	Texture(const char* path, GLenum wrappingMode);
 	Texture(const char* path);
-	void Bind(unsigned short textureUnit);
+	Texture(const char* paths[], GLenum wrappingMode, int numTextures);
+	Texture(const char* paths[], int numTextures);
+	void Bind() override;
+	ASSETTYPE GetAssetType() override;
 private:
-	int m_width, m_height, m_channelCount;
-	unsigned int m_textureID;
+	void LoadTextureFromFile(const char* path, GLenum wrappingMode, int index);
+	std::vector<unsigned int> m_textureIDs;
 };

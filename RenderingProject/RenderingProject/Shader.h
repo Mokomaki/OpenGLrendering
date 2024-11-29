@@ -11,13 +11,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class Shader
+#include "Asset.h"
+
+class Shader : public Asset
 {
 public:
+	Shader(const char* path);
 	~Shader();
-	bool IsInitialized();
-	void GenerateShader(const char* path);
-	void Bind();
+	void Bind() override;
+	ASSETTYPE GetAssetType() override;
 	void SetUniform(const std::string& name, glm::mat4& value);
 	void SetUniform(const std::string& name, glm::vec3& value);
 	void SetUniform(const std::string& name, float value);
@@ -25,6 +27,8 @@ public:
 	void SetUniform(const std::string& name, bool value);
 	void SetUniformTransfrom(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
 private:
+	void GenerateShader(const char* path);
+	bool IsInitialized();
 	void LoadShaderFromFile(const char* path);
 	void CheckShaderError(unsigned int shaderID, GLenum process);
 	unsigned int GetUniformLocation(const char* name);

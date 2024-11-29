@@ -13,35 +13,70 @@ void Renderer::Render(Scene* scene)
     glm::mat4 viewMatrix = scene->m_camera->GetViewMatrix();
 
     glm::vec3 myColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    std::set<Asset*> boundAssets;
     for (int object = 0; object < scene->m_objects.size(); object++)
     {
+        Mesh* meshAsset = nullptr;
+        Shader* shaderAsset = nullptr;
 
-        unsigned int indexCount = 0;
-        Asset* shaderAsset = nullptr;
-        for (int asset = 0; asset < scene->m_objects[object]->m_assets.size(); asset++)
+        std::vector<UniformData*> uniforms;
+
+        for (const char* assetname : scene->m_objects[object]->m_assets)
         {
-            Asset* currentAsset = scene->m_assets[scene->m_objects[object]->m_assets[asset]];
+            Asset* currentAsset = scene->m_assets[assetname];
 
-            if (boundAssets.find(currentAsset) == boundAssets.end())
-            {
-                currentAsset->Bind();
-                boundAssets.clear();
-                boundAssets.insert(currentAsset);
-            }
+            currentAsset->Bind();
 
-            if (currentAsset->GetAssetType() == AssetType::SHADER)
+            switch (currentAsset->GetAssetType())
             {
-                shaderAsset = currentAsset;
-            }
-            else if (currentAsset->GetAssetType() == AssetType::MESH)
-            {
-                indexCount = currentAsset->GetIndexCount();
+                case ASSETTYPE::SHADER:
+                    shaderAsset = (Shader*)currentAsset;
+                    break;
+                case ASSETTYPE::MESH:
+                    meshAsset = (Mesh*)currentAsset;
+                    break;
+                case ASSETTYPE::UNIFORMDATA:
+                    uniforms.push_back((UniformData*)currentAsset);
+            default:
+                break;
             }
         }
-        shaderAsset->SetUniformData("color", myColor);
-        shaderAsset->SetTransformation(scene->m_objects[object]->m_transform,viewMatrix,scene->m_camera->m_Projection);
-        Draw(indexCount);
+
+        for (UniformData* uniform : uniforms)
+        {
+            switch (uniform->GetUniformType())
+            {
+            case UNIFORMDATATYPE::BOOL:
+                bool bvalue;
+                uniform->GetUniformValue(bvalue);
+                shaderAsset->SetUniform(uniform->m_name, bvalue);
+                break;
+            case UNIFORMDATATYPE::INT:
+                int ivalue;
+                uniform->GetUniformValue(ivalue);
+                shaderAsset->SetUniform(uniform->m_name, ivalue);
+                break;
+            case UNIFORMDATATYPE::FLOAT:
+                float fvalue;
+                uniform->GetUniformValue(fvalue);
+                shaderAsset->SetUniform(uniform->m_name, fvalue);
+                break;
+            case UNIFORMDATATYPE::VEC3:
+                glm::vec3 v3value;
+                uniform->GetUniformValue(v3value);
+                shaderAsset->SetUniform(uniform->m_name, v3value);
+                break;
+            case UNIFORMDATATYPE::MAT4:
+                glm::mat4 m4value;
+                uniform->GetUniformValue(m4value);
+                shaderAsset->SetUniform(uniform->m_name, m4value);
+                break;
+            default:
+                break;
+            }
+        }
+
+        shaderAsset->SetUniformTransfrom(scene->m_objects[object]->m_transform,viewMatrix,scene->m_camera->m_Projection);
+        Draw(meshAsset->GetIndexCount());
     }
 }
 

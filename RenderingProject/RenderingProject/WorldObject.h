@@ -13,8 +13,10 @@ class WorldObject
 {
 public:
 	const char* m_name;
-	WorldObject(unsigned int assets[], int size);
-	WorldObject(unsigned int assets[], int size,const char* name);
+	WorldObject(const char* asset0, const char* asset1, const char* asset2, const char* name);
+	WorldObject(const char* asset0, const char* asset1, const char* asset2);
+	WorldObject(const char* assets[], int size, const char* name);
+	WorldObject(const char* assets[], int size);
 	glm::mat4 m_transform = glm::mat4(1.0f);
-	std::vector<unsigned int> m_assets;
+	std::vector<const char*> m_assets;
 };

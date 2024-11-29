@@ -10,6 +10,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Asset.h"
+
 
 struct Vertex {
 	float x, y, z;
@@ -24,19 +26,22 @@ enum class PrimitiveMeshShapes
 	SPHERE_MESH
 };
 
-class Mesh
+class Mesh : public Asset
 {
 public:
-	void CreatePrimitive(PrimitiveMeshShapes shape);
-	void CreateFromFile(const char* path, bool hasNormals);
-	void InitBuffers();
-	void Bind();
-	Vertex* GetVertices();
-	unsigned int* GetIndices();
-	unsigned int GetVertexCount();
+	Mesh(PrimitiveMeshShapes shape);
+	Mesh(const char* path, bool hasNormals);
+	void Bind() override;
+	ASSETTYPE GetAssetType() override;
 	unsigned int GetIndexCount();
 
 private:
+	unsigned int GetVertexCount();
+	unsigned int* GetIndices();
+	Vertex* GetVertices();
+	void InitBuffers();
+	void CreatePrimitive(PrimitiveMeshShapes shape);
+	void CreateFromFile(const char* path, bool hasNormals);
 	glm::vec3 Parse3Floats(std::string& text);
 	glm::vec2 Parse2Floats(std::string& text);
 	void Parse6Ints(std::string& text, unsigned int* vertexArray, unsigned int* uvArray);

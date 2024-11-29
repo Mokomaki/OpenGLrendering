@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Asset.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
@@ -156,6 +155,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="UniformData.cpp" />
     <ClCompile Include="WorldObject.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,17 +164,20 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Program.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="UniformData.h" />
     <ClInclude Include="WorldObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Blend.shader" />
     <None Include="Default.shader" />
     <None Include="Grid.shader" />
-    <None Include="Image.shader" />
+    <None Include="Unlit_solidcolor.shader" />
+    <None Include="Unlit_texture.shader" />
     <None Include="Playground.shader" />
     <None Include="PosToRgb.shader" />
   </ItemGroup>

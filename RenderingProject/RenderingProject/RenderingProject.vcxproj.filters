@@ -36,9 +36,6 @@
     <ClCompile Include="stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Asset.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,6 +46,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,6 +83,12 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.shader">
@@ -94,13 +100,16 @@
     <None Include="Playground.shader">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Image.shader">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Blend.shader">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Grid.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Unlit_texture.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Unlit_solidcolor.shader">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
