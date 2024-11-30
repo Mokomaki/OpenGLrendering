@@ -12,20 +12,15 @@ void Renderer::Render(Scene* scene)
 
     glm::mat4 viewMatrix = scene->m_camera->GetViewMatrix();
 
-    glm::vec3 myColor = glm::vec3(1.0f, 1.0f, 1.0f);
     for (int object = 0; object < scene->m_objects.size(); object++)
     {
         Mesh* meshAsset = nullptr;
         Shader* shaderAsset = nullptr;
 
-        std::vector<UniformData*> uniforms;
-
-        for (const char* assetname : scene->m_objects[object]->m_assets)
+        for (const char* assetname : scene->m_objects[object].m_assets)
         {
             Asset* currentAsset = scene->m_assets[assetname];
-
             currentAsset->Bind();
-
             switch (currentAsset->GetAssetType())
             {
                 case ASSETTYPE::SHADER:
@@ -34,48 +29,48 @@ void Renderer::Render(Scene* scene)
                 case ASSETTYPE::MESH:
                     meshAsset = (Mesh*)currentAsset;
                     break;
-                case ASSETTYPE::UNIFORMDATA:
-                    uniforms.push_back((UniformData*)currentAsset);
             default:
                 break;
             }
         }
 
-        for (UniformData* uniform : uniforms)
+        for (const char* uniformscenename : scene->m_objects[object].m_uniformData)
         {
-            switch (uniform->GetUniformType())
+            UniformData* uniformptr = scene->m_uniformdata[uniformscenename];
+
+            switch (uniformptr->GetUniformType())
             {
             case UNIFORMDATATYPE::BOOL:
                 bool bvalue;
-                uniform->GetUniformValue(bvalue);
-                shaderAsset->SetUniform(uniform->m_name, bvalue);
+                uniformptr->GetUniformValue(bvalue);
+                shaderAsset->SetUniform(uniformptr->GetUniformName(), bvalue);
                 break;
             case UNIFORMDATATYPE::INT:
                 int ivalue;
-                uniform->GetUniformValue(ivalue);
-                shaderAsset->SetUniform(uniform->m_name, ivalue);
+                uniformptr->GetUniformValue(ivalue);
+                shaderAsset->SetUniform(uniformptr->GetUniformName(), ivalue);
                 break;
             case UNIFORMDATATYPE::FLOAT:
                 float fvalue;
-                uniform->GetUniformValue(fvalue);
-                shaderAsset->SetUniform(uniform->m_name, fvalue);
+                uniformptr->GetUniformValue(fvalue);
+                shaderAsset->SetUniform(uniformptr->GetUniformName(), fvalue);
                 break;
             case UNIFORMDATATYPE::VEC3:
                 glm::vec3 v3value;
-                uniform->GetUniformValue(v3value);
-                shaderAsset->SetUniform(uniform->m_name, v3value);
+                uniformptr->GetUniformValue(v3value);
+                shaderAsset->SetUniform(uniformptr->GetUniformName(), v3value);
                 break;
             case UNIFORMDATATYPE::MAT4:
                 glm::mat4 m4value;
-                uniform->GetUniformValue(m4value);
-                shaderAsset->SetUniform(uniform->m_name, m4value);
+                uniformptr->GetUniformValue(m4value);
+                shaderAsset->SetUniform(uniformptr->GetUniformName(), m4value);
                 break;
             default:
                 break;
             }
         }
 
-        shaderAsset->SetUniformTransfrom(scene->m_objects[object]->m_transform,viewMatrix,scene->m_camera->m_Projection);
+        shaderAsset->SetUniformTransfrom(scene->m_objects[object].m_transform,viewMatrix,scene->m_camera->m_Projection);
         Draw(meshAsset->GetIndexCount());
     }
 }

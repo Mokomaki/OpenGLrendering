@@ -39,6 +39,8 @@ void Program::RunApplicationLoop()
             obj->m_transform = glm::rotate(obj->m_transform,glm::radians(rotation),  glm::vec3(0.0000f, 1.0f, 0.0000f));
         }
 
+        m_scene.m_uniformdata["cameraposition"]->SetUniformValue(m_scene.m_camera->Position);
+
         m_renderer.Render(&m_scene);
         
         glfwSwapBuffers(m_window);

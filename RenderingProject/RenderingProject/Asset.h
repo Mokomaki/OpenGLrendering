@@ -3,8 +3,7 @@ enum class ASSETTYPE
 {
 	MESH,
 	SHADER,
-	TEXTURE,
-	UNIFORMDATA
+	TEXTURE
 };
 
 

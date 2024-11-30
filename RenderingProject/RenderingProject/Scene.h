@@ -23,9 +23,9 @@ public:
 	void Initialize();
 	WorldObject* GetWorldObjectByName(const char* name);
 	std::vector<WorldObject*> GetWorldObjectsWithName(const char* name);
-
 public:
 	Camera* m_camera;
-	std::vector<WorldObject*> m_objects;
+	std::vector<WorldObject> m_objects;
 	std::unordered_map<const char*,Asset*> m_assets;
+	std::unordered_map<const char*, UniformData*> m_uniformdata;
 };

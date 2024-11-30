@@ -31,7 +31,7 @@ private:
 	bool IsInitialized();
 	void LoadShaderFromFile(const char* path);
 	void CheckShaderError(unsigned int shaderID, GLenum process);
-	unsigned int GetUniformLocation(const char* name);
+	unsigned int GetUniformLocation(const std::string& name) const;
 private:
 	bool m_isInitialized = false;
 	std::string m_vertexSource;
@@ -40,7 +40,7 @@ private:
 	unsigned int m_fragmentShaderID;
 	unsigned int m_programID;
 
-	std::unordered_map<const char*, unsigned int> m_uniformLocations;
+	mutable std::unordered_map<std::string, unsigned int> m_uniformLocations;
 	unsigned int m_modelUnifromLocation;
 	unsigned int m_viewUnifromLocation;
 	unsigned int m_projectionUnifromLocation;

@@ -176,6 +176,7 @@
     <None Include="Blend.shader" />
     <None Include="Default.shader" />
     <None Include="Grid.shader" />
+    <None Include="Lit.shader" />
     <None Include="Unlit_solidcolor.shader" />
     <None Include="Unlit_texture.shader" />
     <None Include="Playground.shader" />

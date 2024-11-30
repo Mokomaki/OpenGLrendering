@@ -2,7 +2,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Asset.h"
 
 
 enum class UNIFORMDATATYPE
@@ -14,7 +13,7 @@ enum class UNIFORMDATATYPE
 	MAT4
 };
 
-class UniformData : public Asset
+class UniformData
 {
 public:
 	UniformData(const char* name, float value);
@@ -34,10 +33,8 @@ public:
 	void SetUniformValue(glm::mat4& value);
 	const char* GetUniformName();
 	UNIFORMDATATYPE GetUniformType();
-	ASSETTYPE GetAssetType() override;
-	void Bind() override;
-public:
-	const char* m_name;
+private:
+	const char* m_dataName;
 private:
 	UNIFORMDATATYPE m_type;
 	float m_valuef;

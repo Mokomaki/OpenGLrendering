@@ -16,6 +16,7 @@
 struct Vertex {
 	float x, y, z;
 	float u, v;
+	float nx, ny, nz;
 };
 
 enum class PrimitiveMeshShapes
@@ -30,7 +31,7 @@ class Mesh : public Asset
 {
 public:
 	Mesh(PrimitiveMeshShapes shape);
-	Mesh(const char* path, bool hasNormals);
+	Mesh(const char* path);
 	void Bind() override;
 	ASSETTYPE GetAssetType() override;
 	unsigned int GetIndexCount();
@@ -41,7 +42,7 @@ private:
 	Vertex* GetVertices();
 	void InitBuffers();
 	void CreatePrimitive(PrimitiveMeshShapes shape);
-	void CreateFromFile(const char* path, bool hasNormals);
+	void CreateFromFile(const char* path);
 	glm::vec3 Parse3Floats(std::string& text);
 	glm::vec2 Parse2Floats(std::string& text);
 	void Parse6Ints(std::string& text, unsigned int* vertexArray, unsigned int* uvArray);

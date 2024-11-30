@@ -45,12 +45,12 @@ void Shader::GenerateShader(const char * path)
 
 }
 
-unsigned int Shader::GetUniformLocation(const char* name)
+unsigned int Shader::GetUniformLocation(const std::string& name) const
 {
     if (m_uniformLocations.find(name) != m_uniformLocations.end())
         return m_uniformLocations[name];
 
-    m_uniformLocations[name] = glGetUniformLocation(m_programID, name);
+    m_uniformLocations[name] = glGetUniformLocation(m_programID, name.c_str());
     return m_uniformLocations[name];
 }
 
@@ -61,7 +61,7 @@ void Shader::SetUniform(const std::string& name, glm::mat4& value)
 
 void Shader::SetUniform(const std::string& name, glm::vec3& value)
 {
-    glUniform3f(GetUniformLocation(name.c_str()), value.x,value.y,value.z);
+    glUniform3f(GetUniformLocation(name), value.x, value.y, value.z);
 }
 
 void Shader::SetUniform(const std::string& name, float value)

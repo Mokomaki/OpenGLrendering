@@ -2,37 +2,57 @@
 
 UniformData::UniformData(const char* name, float value)
 {
-	m_name = name;
+	m_dataName = name;
 	m_type = UNIFORMDATATYPE::FLOAT;
 	m_valuef = value;
+	m_valuei = 0;
+	m_valueb = false;
+	m_valuev3 = glm::vec3(1.0f);
+	m_valuem4 = glm::mat4(1.0f);
 }
 
 UniformData::UniformData(const char* name, int value)
 {
-	m_name = name;
+	m_dataName = name;
 	m_type = UNIFORMDATATYPE::INT;
 	m_valuei = value;
+	m_valuef = 0.0f;
+	m_valueb = false;
+	m_valuev3 = glm::vec3(1.0f);
+	m_valuem4 = glm::mat4(1.0f);
 }
 
 UniformData::UniformData(const char* name, bool value)
 {
-	m_name = name;
+	m_dataName = name;
 	m_type = UNIFORMDATATYPE::BOOL;
 	m_valueb = value;
+	m_valuef = 0.0f;
+	m_valuei = 0;
+	m_valuev3 = glm::vec3(1.0f);
+	m_valuem4 = glm::mat4(1.0f);
 }
 
 UniformData::UniformData(const char* name, glm::vec3 value)
 {
-	m_name = name;
+	m_dataName = name;
 	m_type = UNIFORMDATATYPE::VEC3;
 	m_valuev3 = value;
+	m_valuef = 0.0f;
+	m_valuei = 0;
+	m_valueb = false;
+	m_valuem4 = glm::mat4(1.0f);
 }
 
 UniformData::UniformData(const char* name, glm::mat4 value)
 {
-	m_name = name;
+	m_dataName = name;
 	m_type = UNIFORMDATATYPE::MAT4;
 	m_valuem4 = value;
+	m_valuef = 0.0f;
+	m_valuei = 0;
+	m_valueb = false;
+	m_valuev3 = glm::vec3(1.0f);
 }
 
 
@@ -88,20 +108,10 @@ void UniformData::SetUniformValue(glm::mat4& value)
 
 const char* UniformData::GetUniformName()
 {
-	return m_name;
-}
-
-ASSETTYPE UniformData::GetAssetType()
-{
-	return ASSETTYPE::UNIFORMDATA;
+	return m_dataName;
 }
 
 UNIFORMDATATYPE UniformData::GetUniformType()
 {
 	return m_type;
-}
-
-void UniformData::Bind()
-{
-	return;
 }
