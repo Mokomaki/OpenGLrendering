@@ -15,7 +15,7 @@ void Scene::Initialize()
     }
     
     m_assets["solidshader"] = new Shader("C:/Users/grest/source/repos/RenderingProgram/RenderingProject/RenderingProject/Lit.shader");
-    m_assets["suzannemesh"] = new Mesh("D:/Documents/SuzanneNorms.obj");
+    m_assets["suzannemesh"] = new Mesh("D:/Documents/Suzanne.obj");
     const char* suzanneassets[] = { "solidshader", "suzannemesh" };
     m_objects.emplace_back(suzanneassets,2, "suzanne");
     m_uniformdata["suzannecolor"] = new UniformData("color", glm::vec3(1.0f, 1.0f, 1.0f));
