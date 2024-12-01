@@ -16,12 +16,14 @@
 class Shader : public Asset
 {
 public:
-	Shader(const char* path);
+	Shader(const char* path, bool isShaderLit);
 	~Shader();
 	void Bind() override;
 	ASSETTYPE GetAssetType() override;
+	bool IsLitShader() const;
 	void SetUniform(const std::string& name, glm::mat4& value);
 	void SetUniform(const std::string& name, glm::vec3& value);
+	void SetUniform(const std::string& name, glm::mat3& value);
 	void SetUniform(const std::string& name, float value);
 	void SetUniform(const std::string& name, int value);
 	void SetUniform(const std::string& name, bool value);
@@ -33,7 +35,8 @@ private:
 	void CheckShaderError(unsigned int shaderID, GLenum process);
 	unsigned int GetUniformLocation(const std::string& name) const;
 private:
-	bool m_isInitialized = false;
+	bool m_isInitialized;
+	bool m_isShaderLit;
 	std::string m_vertexSource;
 	std::string m_fragmentSource;
 	unsigned int m_vertexShaderID;

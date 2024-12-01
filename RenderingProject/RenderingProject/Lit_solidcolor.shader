@@ -7,6 +7,7 @@ layout(location = 2) in vec3 Normal;
 out vec3 normalvalue;
 out vec3 fragposition;
 
+uniform mat3 modelinversetransposed;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -15,7 +16,7 @@ void main()
 {
     gl_Position = projection * view * model * vec4(Position.x, Position.y, Position.z, 1.0);
     fragposition = vec3(model * vec4(Position, 1.0));
-    normalvalue = mat3(transpose(inverse(model))) * Normal;
+    normalvalue = modelinversetransposed * Normal;
 }
 
 #fragmentshader
@@ -33,8 +34,6 @@ uniform vec3 lightposition;
 
 void main()
 {
-
-
     vec3 norm = normalize(normalvalue);
     vec3 lightDir = normalize(lightposition - fragposition);
 

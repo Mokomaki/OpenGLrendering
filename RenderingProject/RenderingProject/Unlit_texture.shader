@@ -23,7 +23,6 @@ out vec4 FragColor;
 in vec2 texCoord;
 
 uniform sampler2D Utexture0;
-uniform sampler2D Utexture1;
 
 void main()
 {

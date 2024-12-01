@@ -70,6 +70,20 @@ void Renderer::Render(Scene* scene)
             }
         }
 
+        if (shaderAsset == nullptr)
+        {
+            std::cout << "ERROR: Attempted to draw object without a shader!" << std::endl;
+            continue;
+        }
+
+        if (shaderAsset->IsLitShader())
+        {
+            glm::mat3 inverseTransposedModel;
+            inverseTransposedModel = glm::inverse(scene->m_objects[object].m_transform);
+            inverseTransposedModel = glm::transpose(inverseTransposedModel);
+            shaderAsset->SetUniform("modelinversetransposed", inverseTransposedModel);
+        }
+
         shaderAsset->SetUniformTransfrom(scene->m_objects[object].m_transform,viewMatrix,scene->m_camera->m_Projection);
         Draw(meshAsset->GetIndexCount());
     }

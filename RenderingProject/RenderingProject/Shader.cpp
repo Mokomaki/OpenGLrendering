@@ -1,7 +1,10 @@
 #include "Shader.h"
 
-Shader::Shader(const char* path)
+Shader::Shader(const char* path, bool isShaderLit)
 {
+    m_isShaderLit = isShaderLit;
+    m_isInitialized = false;
+    LoadShaderFromFile(path);
     GenerateShader(path);
 }
 
@@ -10,9 +13,13 @@ ASSETTYPE Shader::GetAssetType()
     return ASSETTYPE::SHADER;
 }
 
+bool Shader::IsLitShader() const
+{
+    return m_isShaderLit;
+}
+
 void Shader::GenerateShader(const char * path)
 {
-    LoadShaderFromFile(path);
     const char* vertexSource = m_vertexSource.c_str();
     const char* fragmentSource = m_fragmentSource.c_str();
 
@@ -57,6 +64,11 @@ unsigned int Shader::GetUniformLocation(const std::string& name) const
 void Shader::SetUniform(const std::string& name, glm::mat4& value)
 {
     glUniformMatrix4fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::SetUniform(const std::string& name, glm::mat3& value)
+{
+    glUniformMatrix3fv(GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
 void Shader::SetUniform(const std::string& name, glm::vec3& value)

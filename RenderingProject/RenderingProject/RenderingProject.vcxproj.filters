@@ -112,7 +112,10 @@
     <None Include="Unlit_solidcolor.shader">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Lit.shader">
+    <None Include="Lit_solidcolor.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Lit_texture.shader">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
