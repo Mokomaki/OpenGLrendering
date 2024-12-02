@@ -62,10 +62,19 @@ void Renderer::ApplyUniforms(WorldObject& object, Scene& scene, Shader& shader)
     //LIGHT SPECIFIC
     if (shader.IsLitShader())
     {
+        //Inversetransposition for normal vectors
         glm::mat3 inverseTransposedModel;
         inverseTransposedModel = glm::inverse(object.m_transform);
         inverseTransposedModel = glm::transpose(inverseTransposedModel);
         shader.SetUniform("modelinversetransposed", inverseTransposedModel);
+
+        //Light uniforms
+        for (Light light : scene.m_lights)
+        {
+            shader.SetUniform("lightposition", light.m_position);
+            shader.SetUniform("lightcolor", light.m_color);
+            shader.SetUniform("cameraposition", scene.m_camera->Position);
+        }
     }
 
     //OBJECT SPECIFIC

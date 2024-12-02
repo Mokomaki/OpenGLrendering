@@ -11,29 +11,10 @@ void Program::Run()
 
 void Program::RunApplicationLoop()
 {
-    auto t_start = std::chrono::high_resolution_clock::now();
-
-    int lastScreenWidth = 800, lastScreenHeight = 600;
-    int currentScreenWidth = 0, currentScreenHeight = 0;
-
-    float timefromlastlog = 0;
-
     while (!glfwWindowShouldClose(m_window))
     {
-        glfwGetWindowSize(m_window, &currentScreenWidth, &currentScreenHeight);
-        if(currentScreenWidth != lastScreenWidth || currentScreenHeight != lastScreenHeight)
-        {
-            m_scene.m_camera->m_Projection = glm::perspective(glm::radians(80.0f), (float)currentScreenWidth / (float)currentScreenHeight, 0.1f, 100.0f);
-            lastScreenWidth = currentScreenWidth;
-            lastScreenHeight = currentScreenHeight;
-        }
-        //Timing
-        auto t_now = std::chrono::high_resolution_clock::now();
-        m_deltatime = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
-        t_start = t_now;
-        std::cout <<  1 / m_deltatime << std::endl;
-
-
+        UpdateCameraOnResize();
+        CalculateTiming(true);
         ProcessInput();
 
         for (auto obj : m_scene.GetWorldObjectsWithName("cube"))
@@ -42,10 +23,7 @@ void Program::RunApplicationLoop()
             obj->m_transform = glm::rotate(obj->m_transform,glm::radians(rotation),  glm::vec3(0.0000f, 1.0f, 0.0000f));
         }
 
-        m_scene.m_uniformdata["cameraposition"]->SetUniformValue(m_scene.m_camera->Position);
-
         m_renderer.Render(&m_scene);
-
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
@@ -99,19 +77,40 @@ void Program::ProcessInput()
         m_scene.m_camera->ProcessMouseMovement(xoffset, yoffset);
 }
 
+void Program::UpdateCameraOnResize()
+{
+    int currentScreenWidth = 0, currentScreenHeight = 0;
+    glfwGetWindowSize(m_window, &currentScreenWidth, &currentScreenHeight);
+    if (currentScreenWidth != m_screenWidth || currentScreenHeight != m_screenWidth)
+    {
+        m_scene.m_camera->m_Projection = glm::perspective(glm::radians(80.0f), (float)currentScreenWidth / (float)currentScreenHeight, 0.1f, 100.0f);
+        m_screenWidth = currentScreenWidth;
+        m_screenWidth = currentScreenHeight;
+    }
+}
+
+void Program::CalculateTiming(bool printFPS)
+{
+    auto currentTime = std::chrono::high_resolution_clock::now();
+    m_deltatime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - m_lastFrameTime).count();
+    m_lastFrameTime = currentTime;
+    if(printFPS)
+        std::cout << 1 / m_deltatime << std::endl;
+}
 
 void Program::Initialize()
 {
+    m_applicationStartTime = std::chrono::high_resolution_clock::now();
+    m_lastFrameTime = std::chrono::high_resolution_clock::now();
+    m_screenWidth = 800;
+    m_screenHeight = 600;
+
     //=====Initilize window=====
-    
-    //Init GLFW
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    //Make a window
-    m_window = glfwCreateWindow(800, 600, "RendererProgram", NULL, NULL);
+    m_window = glfwCreateWindow(m_screenWidth, m_screenHeight, "Zerypth 2.0", NULL, NULL);
     if (m_window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -122,10 +121,6 @@ void Program::Initialize()
         glfwMakeContextCurrent(m_window);
     }
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-    }
     void FramebufferSizeCallback(GLFWwindow * window, int width, int height);
     glfwSetFramebufferSizeCallback(m_window, FramebufferSizeCallback);
     glfwSwapInterval(0);
@@ -133,12 +128,15 @@ void Program::Initialize()
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     m_isCursorEnabled = false;
     m_firstMouseCallback = true;
-    m_lastX = 800 / 2.0f;
-    m_lastY = 600 / 2.0f;
+    m_lastX = m_screenWidth / 2.0f;
+    m_lastY = m_screenHeight / 2.0f;
 
     //=====Initilize OpenGl=====
-
-    glViewport(0, 0, 800, 600);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+    }
+    glViewport(0, 0, m_screenWidth, m_screenHeight);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);

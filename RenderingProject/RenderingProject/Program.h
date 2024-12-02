@@ -15,15 +15,19 @@ private:
 	void Initialize();
 	void RunApplicationLoop();
 	void ProcessInput();
+	void UpdateCameraOnResize();
+	void CalculateTiming(bool printFPS);
 private:
 	GLFWwindow* m_window;
 	Renderer m_renderer;
-	bool m_firstMouseCallback;
 	Scene m_scene;
-	float m_deltatime;
+	std::chrono::steady_clock::time_point m_lastFrameTime;
+	std::chrono::steady_clock::time_point m_applicationStartTime;
+	bool m_firstMouseCallback;
+	bool m_isCursorEnabled;
 	float m_lastX;
 	float m_lastY;
+	float m_deltatime;
 	int m_screenWidth;
 	int m_screenHeight;
-	bool m_isCursorEnabled;
 };
