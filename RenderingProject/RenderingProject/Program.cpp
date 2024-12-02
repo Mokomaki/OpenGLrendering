@@ -16,6 +16,8 @@ void Program::RunApplicationLoop()
     int lastScreenWidth = 800, lastScreenHeight = 600;
     int currentScreenWidth = 0, currentScreenHeight = 0;
 
+    float timefromlastlog = 0;
+
     while (!glfwWindowShouldClose(m_window))
     {
         glfwGetWindowSize(m_window, &currentScreenWidth, &currentScreenHeight);
@@ -31,6 +33,7 @@ void Program::RunApplicationLoop()
         t_start = t_now;
         std::cout <<  1 / m_deltatime << std::endl;
 
+
         ProcessInput();
 
         for (auto obj : m_scene.GetWorldObjectsWithName("cube"))
@@ -42,7 +45,7 @@ void Program::RunApplicationLoop()
         m_scene.m_uniformdata["cameraposition"]->SetUniformValue(m_scene.m_camera->Position);
 
         m_renderer.Render(&m_scene);
-        
+
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
@@ -106,7 +109,6 @@ void Program::Initialize()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     //Make a window
     m_window = glfwCreateWindow(800, 600, "RendererProgram", NULL, NULL);
@@ -124,6 +126,9 @@ void Program::Initialize()
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
     }
+    void FramebufferSizeCallback(GLFWwindow * window, int width, int height);
+    glfwSetFramebufferSizeCallback(m_window, FramebufferSizeCallback);
+    glfwSwapInterval(0);
 
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     m_isCursorEnabled = false;
@@ -133,14 +138,10 @@ void Program::Initialize()
 
     //=====Initilize OpenGl=====
 
-    //Set viewport and a callback for window resize
     glViewport(0, 0, 800, 600);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-    void FramebufferSizeCallback(GLFWwindow * window, int width, int height);
-    glfwSetFramebufferSizeCallback(m_window, FramebufferSizeCallback);
-    glfwSwapInterval(0);
 }
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {

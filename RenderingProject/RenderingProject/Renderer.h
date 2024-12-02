@@ -21,7 +21,8 @@ public:
 	Renderer();
 	void Render(Scene* scene);
 private:
-	void Draw(unsigned int indexCount);
+	void DrawElements(unsigned int indexCount);
+	void ApplyUniforms(WorldObject& object, Scene& scene ,Shader& shader);
 	void Clear();
 private:
 	glm::vec4 m_clearColor;

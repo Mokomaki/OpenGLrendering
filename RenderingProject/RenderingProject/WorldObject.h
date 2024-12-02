@@ -14,11 +14,9 @@ class WorldObject
 {
 public:
 	const char* m_name;
-	WorldObject(const char* asset0, const char* asset1, const char* asset2, const char* name);
-	WorldObject(const char* asset0, const char* asset1, const char* asset2);
-	WorldObject(const char* assets[], int size, const char* name);
-	WorldObject(const char* assets[], int size);
+	WorldObject(const char* name);
 	void AssociateWithUniform(const char* uniformname);
+	void AssociateWithAsset(const char* assetname);
 	glm::mat4 m_transform = glm::mat4(1.0f);
 	std::vector<const char*> m_assets;
 

@@ -19,6 +19,7 @@ void main()
     gl_Position = projection * view * model * vec4(Position.x, Position.y, Position.z, 1.0);
     fragposition = vec3(model * vec4(Position, 1.0));
     normalvalue = modelinversetransposed * Normal;
+    texcoord = TexCoord;
 }
 
 #fragmentshader

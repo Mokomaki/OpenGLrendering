@@ -22,6 +22,7 @@ class Scene
 public:
 	void Initialize();
 	WorldObject* GetWorldObjectByName(const char* name);
+	WorldObject& CreateWorldObect(const char* name);
 	std::vector<WorldObject*> GetWorldObjectsWithName(const char* name);
 public:
 	Camera* m_camera;
