@@ -68,15 +68,30 @@ void Renderer::ApplyUniforms(WorldObject& object, Scene& scene, Shader& shader)
         inverseTransposedModel = glm::transpose(inverseTransposedModel);
         shader.SetUniform("modelinversetransposed", inverseTransposedModel);
 
+        int countDirs = scene.m_directionalLights.size();
+        int countPoints = scene.m_pointLights.size();
+
         //Light uniforms
-        for (Light light : scene.m_lights)
+        shader.SetUniform("directionallightcount",countDirs);
+        shader.SetUniform("pointlightcount",countPoints);
+        shader.SetUniform("cameraposition", scene.m_camera->Position);
+        for (int i = 0; i < scene.m_directionalLights.size();i++) 
         {
-            shader.SetUniform("lightposition", light.m_position);
-            shader.SetUniform("lightcolor", light.m_color);
-            shader.SetUniform("cameraposition", scene.m_camera->Position);
+            std::string uniformname = "directionallights[" + std::to_string(i) + "]";
+            shader.SetUniform(uniformname+".lightdirection", scene.m_directionalLights[i].m_direction);
+            shader.SetUniform(uniformname + ".lightcolor", scene.m_directionalLights[i].m_color);
+        }
+
+        for (int i = 0; i < scene.m_pointLights.size(); i++)
+        {
+            std::string uniformname = "pointlights[" + std::to_string(i) + "]";
+            shader.SetUniform(uniformname + ".position", scene.m_pointLights[i].m_position);
+            shader.SetUniform(uniformname + ".color", scene.m_pointLights[i].m_color);
+            shader.SetUniform(uniformname + ".constantterm", scene.m_pointLights[i].m_constantAttennuationTerm);
+            shader.SetUniform(uniformname + ".linearterm", scene.m_pointLights[i].m_linearAttennuationTerm);
+            shader.SetUniform(uniformname + ".quadraticterm", scene.m_pointLights[i].m_quadraticAttennuationTerm);
         }
     }
-
     //OBJECT SPECIFIC
     for (const char* uniformscenename : object.m_uniformData)
     {
@@ -107,6 +122,11 @@ void Renderer::ApplyUniforms(WorldObject& object, Scene& scene, Shader& shader)
             glm::mat4 m4value;
             uniformptr->GetUniformValue(m4value);
             shader.SetUniform(uniformptr->GetUniformName(), m4value);
+            break;
+        case UNIFORMDATATYPE::PbrProperty:
+            PbrProperties pbrvalue;
+            uniformptr->GetUniformValue(pbrvalue);
+            shader.SetUniform(pbrvalue);
             break;
         default:
             break;

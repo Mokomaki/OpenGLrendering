@@ -23,13 +23,15 @@ class Scene
 public:
 	void Initialize();
 	WorldObject& CreateWorldObect(const char* name);
-	Light& CreateLight(glm::vec3 position, glm::vec3 color);
+	DirectionalLight& CreateLightDirectional(glm::vec3 direction, glm::vec3 color);
+	PointLight& CreateLightPoint(glm::vec3 position, glm::vec3 color,float range);
 	WorldObject* GetWorldObjectByName(const char* name);
 	std::vector<WorldObject*> GetWorldObjectsWithName(const char* name);
 public:
 	Camera* m_camera;
 	std::vector<WorldObject> m_objects;
-	std::vector<Light> m_lights;
+	std::vector<DirectionalLight> m_directionalLights;
+	std::vector<PointLight> m_pointLights;
 	std::unordered_map<const char*,Asset*> m_assets;
 	std::unordered_map<const char*, UniformData*> m_uniformdata;
 };

@@ -55,6 +55,17 @@ UniformData::UniformData(const char* name, glm::mat4 value)
 	m_valuev3 = glm::vec3(1.0f);
 }
 
+UniformData::UniformData(const char* name, PbrProperties value)
+{
+	m_dataName = name;
+	m_type = UNIFORMDATATYPE::PbrProperty;
+	m_valuepbr = value;
+	m_valuef = 0.0f;
+	m_valuei = 0;
+	m_valueb = false;
+	m_valuev3 = glm::vec3(1.0f);
+	m_valuem4 = glm::mat4(1.0f);
+}
 
 void UniformData::GetUniformValue(float& out)
 {
@@ -81,29 +92,39 @@ void UniformData::GetUniformValue(glm::mat4& out)
 	out = m_valuem4;
 }
 
-void UniformData::SetUniformValue(float& value)
+void UniformData::GetUniformValue(PbrProperties& out)
+{
+	out = m_valuepbr;
+}
+
+void UniformData::SetUniformValue(float value)
 {
 	m_valuef = value;
 }
 
-void UniformData::SetUniformValue(int& value)
+void UniformData::SetUniformValue(int value)
 {
 	m_valuei = value;
 }
 
-void UniformData::SetUniformValue(bool& value)
+void UniformData::SetUniformValue(bool value)
 {
 	m_valueb = value;
 }
 
-void UniformData::SetUniformValue(glm::vec3& value)
+void UniformData::SetUniformValue(glm::vec3 value)
 {
 	m_valuev3 = value;
 }
 
-void UniformData::SetUniformValue(glm::mat4& value)
+void UniformData::SetUniformValue(glm::mat4 value)
 {
 	m_valuem4 = value;
+}
+
+void UniformData::SetUniformValue(PbrProperties value)
+{
+	m_valuepbr = value;
 }
 
 const char* UniformData::GetUniformName()

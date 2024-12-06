@@ -94,8 +94,11 @@ void Program::CalculateTiming(bool printFPS)
     auto currentTime = std::chrono::high_resolution_clock::now();
     m_deltatime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - m_lastFrameTime).count();
     m_lastFrameTime = currentTime;
-    if(printFPS)
-        std::cout << 1 / m_deltatime << std::endl;
+    if (printFPS)
+    {
+        //std::cout << "[FRAMETIME:]" << m_deltatime << std::endl;
+        //std::cout << "[FPS:] " << 1 / m_deltatime << std::endl;
+    }
 }
 
 void Program::Initialize()

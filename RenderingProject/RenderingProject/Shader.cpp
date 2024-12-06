@@ -91,6 +91,14 @@ void Shader::SetUniform(const std::string& name, bool value)
     glUniform1i(GetUniformLocation(name.c_str()), (int)value);
 }
 
+void Shader::SetUniform(PbrProperties& value)
+{
+    SetUniform("pbrproperty.ambient", value.ambient);
+    SetUniform("pbrproperty.diffuse", value.diffuse);
+    SetUniform("pbrproperty.specular", value.specular);
+    SetUniform("pbrproperty.smoothness", value.smoothness);
+}
+
 void Shader::SetUniformTransfrom(glm::mat4& model, glm::mat4& view, glm::mat4& projection)
 {
     glUniformMatrix4fv(m_modelUnifromLocation, 1, GL_FALSE, glm::value_ptr(model));

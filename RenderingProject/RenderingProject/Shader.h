@@ -11,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "UniformData.h"
 #include "Asset.h"
 
 class Shader : public Asset
@@ -27,6 +28,7 @@ public:
 	void SetUniform(const std::string& name, float value);
 	void SetUniform(const std::string& name, int value);
 	void SetUniform(const std::string& name, bool value);
+	void SetUniform(PbrProperties& value);
 	void SetUniformTransfrom(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
 private:
 	void GenerateShader(const char* path);
