@@ -55,16 +55,21 @@ void Texture::LoadTextureFromFile(const char* path, GLenum wrappingMode, int ind
 	unsigned char* data = stbi_load(path, &width, &height, &channelCount, 0);
 
 	m_textureIDs.emplace_back(0);
-
+	
 	glGenTextures(1, &m_textureIDs[index]);
 	glBindTexture(GL_TEXTURE_2D, m_textureIDs[index]);
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrappingMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrappingMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	if (channelCount == 3)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	}
+	else if (channelCount == 4)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	}
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	stbi_image_free(data);

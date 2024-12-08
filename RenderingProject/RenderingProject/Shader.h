@@ -17,6 +17,7 @@
 class Shader : public Asset
 {
 public:
+	friend class Material;
 	Shader(const char* path, bool isShaderLit);
 	~Shader();
 	void Bind() override;

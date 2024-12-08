@@ -54,6 +54,9 @@
     <ClCompile Include="Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -95,15 +98,15 @@
     <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.shader">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="PosToRgb.shader">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Playground.shader">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Blend.shader">
@@ -122,6 +125,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Lit_texture.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Playground.shader">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
