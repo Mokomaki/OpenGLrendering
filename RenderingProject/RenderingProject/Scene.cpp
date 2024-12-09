@@ -21,14 +21,15 @@ void Scene::Initialize()
     PbrProperties groundprops = { glm::vec3(0.1f,0.1f,0.1f),glm::vec3(0.137,0.141f,0.169f),glm::vec3(0.1f,0.1f,0.1f),16.0f };
     m_uniformdata["groundmaterial"] = new UniformData("groundmaterial", groundprops);
 
-    CreateLightDirectional(glm::vec3(3.0f, -1.0f, -3.5f), glm::vec3(1.0f, 1.0f, 1.0f));
-    CreateLightDirectional(glm::vec3(-3.0f, 1.0f, 3.5f), glm::vec3(0.3f, 0.0f, 0.35f));
+    CreateLightDirectional(glm::vec3(7.0f, -10.0f, -7.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+    //CreateLightDirectional(glm::vec3(-3.0f, 1.0f, 3.5f), glm::vec3(0.3f, 0.0f, 0.35f));
     CreateLightPoint(glm::vec3(-5.0f, 2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 100);
     CreateLightPoint(glm::vec3(5.0f, 2.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 200);
     //CreateLightPoint(glm::vec3(0.0f, 1.0f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 600);
 
     WorldObject& groundplane = CreateWorldObect("ground");
-    groundplane.Scale(glm::vec3(15.0f, 1.0f, 15.0f)).Translate(glm::vec3(0.0f, -1.5f, 0.0f));
+    groundplane.Scale(glm::vec3(150.0f, 1.0f, 150.0f)).Translate(glm::vec3(0.0f, -1.5f, 0.0f));
+    //groundplane.AssociateWithAsset("unlit_texture");
     groundplane.AssociateWithAsset("lit_solidcolorshader");
     groundplane.AssociateWithAsset("planemesh");
     groundplane.AssociateWithUniform("groundmaterial");

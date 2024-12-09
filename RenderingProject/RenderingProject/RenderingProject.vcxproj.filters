@@ -130,5 +130,11 @@
     <None Include="Playground.shader">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="shadowobject.shader">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Framebuffer_debug.shader">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

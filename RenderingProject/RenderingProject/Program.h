@@ -19,7 +19,7 @@ private:
 	void CalculateTiming(bool printFPS);
 private:
 	GLFWwindow* m_window;
-	Renderer m_renderer;
+	Renderer* m_renderer;
 	Scene m_scene;
 	std::chrono::steady_clock::time_point m_lastFrameTime;
 	std::chrono::steady_clock::time_point m_applicationStartTime;

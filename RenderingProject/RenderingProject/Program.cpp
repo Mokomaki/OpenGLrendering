@@ -6,6 +6,8 @@ void Program::Run()
 {
     Initialize();
     m_scene.Initialize();
+    
+    //m_renderer->Render(&m_scene);
     RunApplicationLoop();
 }
 
@@ -14,7 +16,7 @@ void Program::RunApplicationLoop()
     while (!glfwWindowShouldClose(m_window))
     {
         UpdateCameraOnResize();
-        CalculateTiming(true);
+        CalculateTiming(false);
         ProcessInput();
 
         for (auto obj : m_scene.GetWorldObjectsWithName("cube"))
@@ -23,7 +25,7 @@ void Program::RunApplicationLoop()
             obj->m_transform = glm::rotate(obj->m_transform,glm::radians(rotation),  glm::vec3(0.0000f, 1.0f, 0.0000f));
         }
 
-        m_renderer.Render(&m_scene);
+        m_renderer->Render(&m_scene);
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
@@ -85,7 +87,8 @@ void Program::UpdateCameraOnResize()
     {
         m_scene.m_camera->m_Projection = glm::perspective(glm::radians(80.0f), (float)currentScreenWidth / (float)currentScreenHeight, 0.1f, 100.0f);
         m_screenWidth = currentScreenWidth;
-        m_screenWidth = currentScreenHeight;
+        m_screenHeight = currentScreenHeight;
+        m_renderer->SetViewportSize(m_screenWidth, m_screenHeight);
     }
 }
 
@@ -96,8 +99,8 @@ void Program::CalculateTiming(bool printFPS)
     m_lastFrameTime = currentTime;
     if (printFPS)
     {
-        //std::cout << "[FRAMETIME:]" << m_deltatime << std::endl;
-        //std::cout << "[FPS:] " << 1 / m_deltatime << std::endl;
+        std::cout << "[FRAMETIME:] " << m_deltatime << std::endl;
+        std::cout << "[FPS:] " << 1 / m_deltatime << std::endl;
     }
 }
 
@@ -125,9 +128,6 @@ void Program::Initialize()
         glfwMakeContextCurrent(m_window);
     }
 
-
-    void FramebufferSizeCallback(GLFWwindow * window, int width, int height);
-    glfwSetFramebufferSizeCallback(m_window, FramebufferSizeCallback);
     glfwSwapInterval(0);
 
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -141,15 +141,6 @@ void Program::Initialize()
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
     }
-    glViewport(0, 0, m_screenWidth, m_screenHeight);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glEnable(GL_MULTISAMPLE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
+    m_renderer = new Renderer();
+    m_renderer->SetViewportSize(m_screenWidth, m_screenHeight);
 }

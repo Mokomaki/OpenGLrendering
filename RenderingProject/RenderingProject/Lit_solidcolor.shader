@@ -6,17 +6,20 @@ layout(location = 2) in vec3 Normal;
 
 out vec3 normalvalue;
 out vec3 fragposition;
+out vec4 fragpositionlightspace;
 
 uniform mat3 modelinversetransposed;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 lightspacematrix;
 
 void main()
 {
     gl_Position = projection * view * model * vec4(Position.x, Position.y, Position.z, 1.0);
     fragposition = vec3(model * vec4(Position, 1.0));
     normalvalue = modelinversetransposed * Normal;
+    fragpositionlightspace = lightspacematrix * vec4(fragposition, 1.0);
 }
 
 #fragmentshader
@@ -44,6 +47,7 @@ struct PointLight {
 
 out vec4 FragColor;
 in vec3 fragposition;
+in vec4 fragpositionlightspace;
 in vec3 normalvalue;
 
 #define MAX_DIR_LIGHTS 4
@@ -56,8 +60,11 @@ uniform int directionallightcount;
 uniform int pointlightcount;
 uniform vec3 cameraposition;
 
+uniform sampler2D shadowmap;
+
 vec3 CalculateDirectionalLightContribution(DirectionalLight light, vec3 normal, vec3 viewdir);
 vec3 CalculatePointLightContribution(PointLight light, vec3 normal, vec3 fragpos, vec3 viewdir);
+float CalculateShadowValue(vec4 lightspacefragpos, vec3 normal, vec3 lightDir);
 
 void main()
 {
@@ -75,6 +82,12 @@ void main()
         result += CalculatePointLightContribution(pointlights[i], norm, fragposition, viewdirection);
     }
 
+    vec3 lightDir = normalize(-directionallights[0].lightdirection);
+
+    float shadowvalue = CalculateShadowValue(fragpositionlightspace, norm, lightDir);
+    result = result * (1.1 - shadowvalue);
+
+    //FragColor = texture(shadowmap, fragpositionlightspace.xy);
     FragColor = vec4(result, 1.0);
 }
 
@@ -114,4 +127,30 @@ vec3 CalculateDirectionalLightContribution(DirectionalLight light, vec3 normal, 
     vec3 diffuse = light.lightcolor * diff * pbrproperty.diffuse;
     vec3 specular = light.lightcolor * spec * pbrproperty.specular;
     return (ambient + diffuse + specular);
+}
+
+float CalculateShadowValue(vec4 lightspacefragpos, vec3 normal, vec3 lightDir)
+{
+    vec3 projectionCoords = lightspacefragpos.xyz / lightspacefragpos.w;
+    projectionCoords = projectionCoords * 0.5 + 0.5;
+    float closestDepth = texture(shadowmap, projectionCoords.xy).r;
+    float currentDepth = projectionCoords.z;
+    float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.005);
+
+    //float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(shadowmap, 0);
+    for (int x = -1; x <= 1; ++x)
+    {
+        for (int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(shadowmap, projectionCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+        }
+    }
+    shadow /= 9.0;
+
+    if (projectionCoords.z > 1.0)
+        shadow = 0.0;
+    return shadow;
 }
