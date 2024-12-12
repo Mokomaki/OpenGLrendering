@@ -85,9 +85,11 @@ void main()
     vec3 lightDir = normalize(-directionallights[0].lightdirection);
 
     float shadowvalue = CalculateShadowValue(fragpositionlightspace, norm, lightDir);
-    result = result * (1.1 - shadowvalue);
+    if(shadowvalue > 0)
+        result = result * (1.2 - shadowvalue);
 
     //FragColor = texture(shadowmap, fragpositionlightspace.xy);
+    //FragColor = vec4(shadowvalue);
     FragColor = vec4(result, 1.0);
 }
 
@@ -133,24 +135,32 @@ float CalculateShadowValue(vec4 lightspacefragpos, vec3 normal, vec3 lightDir)
 {
     vec3 projectionCoords = lightspacefragpos.xyz / lightspacefragpos.w;
     projectionCoords = projectionCoords * 0.5 + 0.5;
+
+    if (projectionCoords.z > 1.0) // If outside frustum
+    {
+        return 0;
+    }
+
     float closestDepth = texture(shadowmap, projectionCoords.xy).r;
     float currentDepth = projectionCoords.z;
-    float bias = max(0.001 * (1.0 - dot(normal, lightDir)), 0.005);
+    float cosTheta = clamp(dot(normal, lightDir), 0.0, 1.0);
+    float bias = 0.00003 * tan(acos(cosTheta));
 
-    //float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowmap, 0);
-    for (int x = -1; x <= 1; ++x)
+    for (int x = -1; x <= 1; x++)
     {
-        for (int y = -1; y <= 1; ++y)
+        for (int y = -1; y <= 1; y++)
         {
             float pcfDepth = texture(shadowmap, projectionCoords.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
         }
     }
     shadow /= 9.0;
+    float selfshadow = clamp(-1 * dot(normal, lightDir), 0.0, 0.1);
+    shadow = max(shadow, selfshadow);
 
-    if (projectionCoords.z > 1.0)
-        shadow = 0.0;
+
+
     return shadow;
 }

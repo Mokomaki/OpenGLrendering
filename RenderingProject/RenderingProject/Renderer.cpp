@@ -8,8 +8,10 @@ Renderer::Renderer()
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    m_clearColor = glm::vec4(0.17254901f, 0.17254901f, 0.17254901f, 1.0f);
+    //glEnable(GL_FRAMEBUFFER_SRGB);
+    //m_clearColor = glm::vec4(0.871f, 0.871f, 0.871f,1.0f); //bright 
+    //m_clearColor = glm::vec4(0.17254901f, 0.17254901f, 0.17254901f, 1.0f); //gray
+    m_clearColor = glm::vec4(0.039f, 0.039f, 0.039f, 1.0f); //dak
     m_currentScene = nullptr;
     
     InitShadowFramebuffer();
@@ -25,14 +27,16 @@ void Renderer::Render(Scene* scene)
 
 void Renderer::ShadowPass()
 {
+    glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, m_shadowFBwidth, m_shadowFBheight);
     glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFBO);
-    glDisable(GL_CULL_FACE);
-    //glCullFace(GL_FRONT);
+    //glDisable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     Clear(GL_DEPTH_BUFFER_BIT);
     //light projection
     float near_plane = 0.5f, far_plane = 50.0f;
     glm::mat4 lightProjection = glm::ortho(-20.0f, 20.0f, -20.0f, 20.0f, near_plane, far_plane);
+
     glm::mat4 lightView = glm::lookAt(-m_currentScene->m_directionalLights[0].m_direction,glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3(0.0f, 1.0f, 0.0f));
     m_currentLightSpaceMatrix = lightProjection * lightView;
 
@@ -56,16 +60,20 @@ void Renderer::ShadowPass()
         DrawElements(meshAsset->GetIndexCount());
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    /*
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    
+    if (false)//depthmap test quad
+    {
+        glCullFace(GL_BACK);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-    m_debugshader->Bind();
-    glBindVertexArray(quadVAO);
-    glDisable(GL_DEPTH_TEST);
-    glBindTexture(GL_TEXTURE_2D, m_shadowDepthMapID);
-    glDrawArrays(GL_TRIANGLES, 0, 6);*/
-    glEnable(GL_CULL_FACE);
+        m_debugshader->Bind();
+        glBindVertexArray(quadVAO);
+        glDisable(GL_DEPTH_TEST);
+        glBindTexture(GL_TEXTURE_2D, m_shadowDepthMapID);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+    //glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 }
 
@@ -110,8 +118,8 @@ void Renderer::InitShadowFramebuffer()
     m_shadowObjectShader = new Shader("C:/Users/grest/source/repos/RenderingProgram/RenderingProject/RenderingProject/shadowobject.shader", false);
     m_debugshader = new Shader("C:/Users/grest/source/repos/RenderingProgram/RenderingProject/RenderingProject/Framebuffer_debug.shader", false);
     
-    m_shadowFBheight = 1024;
-    m_shadowFBwidth = 1024;
+    m_shadowFBheight = 2048;
+    m_shadowFBwidth = 2048;
 
     glGenFramebuffers(1, &m_shadowFBO);
     glGenTextures(1, &m_shadowDepthMapID);

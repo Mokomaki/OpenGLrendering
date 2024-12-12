@@ -16,16 +16,16 @@ void Scene::Initialize()
     m_assets["rgbaimage"] = new Texture("D:/Pictures/rgbasmile.png");
     const char* containertexturepaths[] = { "D:/Pictures/paneldiff.tga", "D:/Pictures/panelspec.tga" };
     m_assets["containertextures"] = new Texture(containertexturepaths, 2);
-    PbrProperties testboxprops = { glm::vec3(0.1f,0.1f,0.12f),glm::vec3(1.0f,1.0f,1.0f),glm::vec3(1.0f,1.0f,1.0f),128.0f };
+    PbrProperties testboxprops = { glm::vec3(0.05f,0.05f,0.05f),glm::vec3(1.0f,1.0f,1.0f),glm::vec3(1.0f,1.0f,1.0f),128.0f };
     m_uniformdata["testmaterial"] = new UniformData("testmaterial", testboxprops);
-    PbrProperties groundprops = { glm::vec3(0.1f,0.1f,0.1f),glm::vec3(0.137,0.141f,0.169f),glm::vec3(0.1f,0.1f,0.1f),16.0f };
+    PbrProperties groundprops = { glm::vec3(0.2f,0.2f,0.2f),glm::vec3(0.137,0.141f,0.169f),glm::vec3(0.1f,0.1f,0.1f),16.0f };
     m_uniformdata["groundmaterial"] = new UniformData("groundmaterial", groundprops);
 
-    CreateLightDirectional(glm::vec3(7.0f, -10.0f, -7.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+    CreateLightDirectional(glm::vec3(7.0f, -10.0f, -7.5f), glm::vec3(0.6f));
     //CreateLightDirectional(glm::vec3(-3.0f, 1.0f, 3.5f), glm::vec3(0.3f, 0.0f, 0.35f));
-    CreateLightPoint(glm::vec3(-5.0f, 2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 100);
-    CreateLightPoint(glm::vec3(5.0f, 2.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 200);
-    //CreateLightPoint(glm::vec3(0.0f, 1.0f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 600);
+    CreateLightPoint(glm::vec3(-10.0f, 2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 100);
+    CreateLightPoint(glm::vec3(10.0f, 2.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 200);
+    //CreateLightPoint(glm::vec3(0.0f, 1.0f, -15.0f), glm::vec3(0.0f, 1.0f, 0.0f), 100);
 
     WorldObject& groundplane = CreateWorldObect("ground");
     groundplane.Scale(glm::vec3(150.0f, 1.0f, 150.0f)).Translate(glm::vec3(0.0f, -1.5f, 0.0f));
@@ -35,7 +35,7 @@ void Scene::Initialize()
     groundplane.AssociateWithUniform("groundmaterial");
 
     WorldObject& testcube = CreateWorldObect("testcube");
-    testcube.Translate(glm::vec3(8.0f, 0.0f, 0.0f));
+    testcube.Translate(glm::vec3(8.0f, -0.5f, 0.0f));
     testcube.AssociateWithAsset("lit_textureshader");
     testcube.AssociateWithAsset("UVcube");
     m_uniformdata["testcubeambient"] = new UniformData("u_ambient", glm::vec3(0.1, 0.1, 0.15));
